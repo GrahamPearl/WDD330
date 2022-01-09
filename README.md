@@ -1,1 +1,1 @@
-# CSE-121B-JS
+# WDD 330 Profolio Front-End Development
