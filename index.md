@@ -23,7 +23,7 @@
     </nav>
     <header>
         <h1>BYU-Idaho, CSE 121B JavaScript Language</h1>
-        <img src="./portfolio/images/self.jpg" alt="Photo">
+        <img src="./portfolio/images/self.png" alt="Photo">
     </header>
     <main>
         <section>
