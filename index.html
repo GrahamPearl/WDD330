@@ -1,38 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>BYU-Idaho, WDD 330 JavaScript Language Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Kalam&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./portfolio/styles/main.css" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BYU-Idaho, WDD 330 JavaScript Language Portfolio </title>
-    <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./portfolio/styles/main.css">
-</head>
+    <link
+      href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+  </head>
 
-<body>
+  <body>
     <nav>
-        <ul id="menu">
-            <li><a id="toggleMenu">&equiv;</a></li>
-            <li><a href="#"  class="active">Home</a></li>
-            <li><a href="./portfolio/task1.html">Lesson 1</a></li>            
-        </ul>
+      <ul id="menu">
+        <li><a id="toggleMenu">&equiv;</a></li>
+        <li><a href="#" class="active">Home</a></li>        
+        <li><a href="./portfolio/task1.html">Lesson 1</a></li>
+        <li><a href="./portfolio/task2.html">2</a></li>
+      </ul>
     </nav>
     <header>
-        <h1>BYU-Idaho, WDD 330 Front-End Development Profolio</h1>
-        <img src="./portfolio/images/self.png" alt="Photo">
+      <h1>BYU-Idaho, WDD 330 Front-End Development Profolio</h1>
+      <img src="./portfolio/images/self.png" style="width:125px;height:150px;" alt="Photo" />
     </header>
     <main>
-        <section>
-            <div>
-            <p>Please note that the following is a portfolio item, used to demonstrate skills gained in HTML, CSS and JavaScript Front-End Development</p>    
-            </div>
-        </section>
-    </main>
-    <footer>
-        &copy;<span id="year"></span> | Biography | Index
-    </footer>
-    <script src="scripts/main.js"></script>    
-</body>
+      <section>
+        <div>
+          <p>
+            Please note that the following is a portfolio item, used to
+            demonstrate skills gained in HTML, CSS and JavaScript Front-End
+            Development
+          </p>
+        </div>
+      </section>
 
+      <section>
+        <div class="container">
+          <table id="table" data-toggle="table" data-url="json/data.json">
+            <thead>
+              <tr>
+                <th data-field="week">WEEK</th>
+                <th data-field="topic">TOPIC</th>
+                <th data-field="link">LINK</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </section>
+    </main>
+    <footer>&copy;<span id="year"></span> | Biography | Index</footer>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/index.js"></script>
+  </body>
 </html>
