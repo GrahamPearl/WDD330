@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tic-Tac-Toe</title>
+
+    <link rel="stylesheet" href="../portfolio/styles/team4.css" />
+  </head>
+
+  <body>
+    <h1>Tic-Tac-Toe</h1>
+
+    <table id="#board"></table>
+    <button onclick="reset()">Reset</button>
+
+    <script>
+      let player = 0
+
+      let cells = [
+        ["_", "_", "_"],
+        ["_", "_", "_"],
+        ["_", "_", "_"],
+      ];
+
+      let blankcells = [
+        ["_", "_", "_"],
+        ["_", "_", "_"],
+        ["_", "_", "_"],
+      ];
+
+      function reset()
+      {
+        for (let i = 0; i < cells.length; i++) {
+            for (let j = 0; j < cells[i].length; j++) {
+                cells[i][j] = blankcells[i][j]
+            }            
+        }
+        player = 0
+
+        document.getElementById("#board").innerHTML = showState();
+      }
+
+      function checkIfEndOfGame()
+      {          
+          //alert("contains:"+cells[0][0]+""+cells[0][1]+""+cells[0][2])          
+          return (cells[0][0] == cells[0][1] == cells[0][2]); 
+      }
+
+      function handleTouch(event, y_pos, x_pos) {                            
+          if (player == 1)
+           { cells[y_pos][x_pos]= "X"
+           }
+          else 
+           { cells[y_pos][x_pos]= "O"
+           }
+          
+
+          document.getElementById("#board").innerHTML = showState();
+
+          //alert("Checking if end of game: "+ checkIfEndOfGame())
+          if (checkIfEndOfGame()) { 
+            if (player == 1)
+              alert("Game Won By X")
+              else
+              alert("Game Won By O");
+          }
+
+          player = (player+1) % 2;
+      }
+
+      function showState() {
+        let x = "";
+        for (let i = 0; i < cells.length; i++) {
+          x += "<tr>";
+          for (let j = 0; j < cells[i].length; j++) {
+            x += '<td ontouchend="handleTouch(event,'+i+','+j+')">' + cells[i][j] + '</td>';
+          }
+
+          x += "</tr>";
+        }
+
+        return x;
+      }
+
+      document.getElementById("#board").innerHTML = showState();      
+      
+    </script>
+  </body>
+</html>

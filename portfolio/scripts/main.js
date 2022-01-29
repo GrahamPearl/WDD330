@@ -1,4 +1,7 @@
 // toggle menu in small view
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 const menuItems =
     '<div class="container-fluid">' +
     ' <a class="navbar-brand" href="#">Navbar</a>' +
@@ -32,7 +35,7 @@ const menuItems =
     '  </div>' +
     '</div>'
 
-//document.getElementById("#menu").innerHTML = menuItems
+
 
 
 //<document.querySelector('#toggleMenu').addEventListener('click', toggleMenu);
