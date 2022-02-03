@@ -5,6 +5,76 @@ header img:hover {
     animation-iteration-count: infinite;
 }
 
+.container {
+    transform-style: preserve-3d
+}
+
+.container .card-group {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    cursor: pointer
+}
+
+.container .card-group .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: 0.9s ease
+}
+
+.container .card-group .card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg)
+}
+
+.container .card-group .card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: rotateY(180deg)
+}
+
+.container .card-group .card .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #333;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.container .card-group:hover .card {
+    transform: rotateY(180deg)
+}
+
+.container .card-group .card div {
+    transform-style: preserve-3d;
+    padding: 20px;
+    background: linear-gradient(45deg, #FE0061, #FFEB3B);
+    transform: translateZ(100px)
+}
+
+.container .card-group .card div h3 {
+    letter-spacing: 1px
+}
+
 @keyframes shake {
     0% {
         transform: translate(1px, 1px) rotate(0deg);
