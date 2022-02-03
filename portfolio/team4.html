@@ -3,19 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <title>Tic-Tac-Toe</title>
-
+    <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet">
+	  <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="../portfolio/styles/team4.css" />
   </head>
 
   <body>
+    <nav>
+      <ul id="menu">
+          <li><a id="toggleMenu">&equiv;</a></li>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="#" class="active">Team 4</a></li>            
+      </ul>
+  </nav>
     <h1>Tic-Tac-Toe</h1>
     Please note that the following works on a touch-screen and with Mouse clicks.
 
     <table id="#board"></table>
     <button onclick="reset()">Reset</button>
 
-    <script>
-      alert("loading page...")
+    <script>      
       let player = 0;
 
       let cells = [
