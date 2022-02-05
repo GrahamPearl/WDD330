@@ -70,4 +70,3 @@ export default class HikesView {
     return backButton;
   }
 }
-export default HikesView;

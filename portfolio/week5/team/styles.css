@@ -6,7 +6,8 @@ main > h1 {
   margin-bottom: -0.5em;
 }
 img {
-  max-width: 100%;
+  max-width: 20%;
+  height: auto;
 }
 .hikeStyles {
   padding: 0;
@@ -22,21 +23,21 @@ img {
   margin-bottom: 0.5em;
 }
 
-.light {
+.li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
-.light > h2 {
+.li > h2 {
   width: 100%;
   flex: 1 0 auto;
 }
 
-.light > div {
+.li > div {
   width: 40%;
   margin-left: 1em;
   flex: 1 1 auto;
 }
-.light h3 {
+.li h3 {
   margin-bottom: -0.5em;
 }
