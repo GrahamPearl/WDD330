@@ -34,9 +34,10 @@ export default class HikeModel {
     }
     getAllHikes() {
         // should return a list of all the hikes.
+        return hikeList;
     }
     getHikeByName(hikeName) {
         // filter the hikes for the record identified by hikeName and return it
-        return;
+        return hikeList.find(hike=> hike.name === hikeName);
     }
 }
