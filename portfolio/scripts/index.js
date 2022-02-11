@@ -1,6 +1,6 @@
 menuItems = {
-    "titles": ["Week 1", "Week 2", "Week 3", "Week 4", "Team 4", "Week 5", "Team 5"],
-    "links": ["task1.html", "task2.html", "task3.html", "task4.html", "team4.html", "task5.html", "team5.html"]
+    "titles": ["Week 1", "Week 2", "Week 3", "Week 4", "Team 4", "Week 5", "Team 5", "Week 6"],
+    "links": ["task1.html", "task2.html", "task3.html", "task4.html", "team4.html", "task5.html", "team5.html", "task6.html"]
 }
 
 function buildMenu() {
