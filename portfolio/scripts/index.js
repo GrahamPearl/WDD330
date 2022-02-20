@@ -1,14 +1,20 @@
 menuItems = {
-    "titles": ["Week 1", "Week 2", "Week 3", "Week 4", "Team 4", "Week 5", "Team 5", "Week 6", "Team 7", "Week 7"],
-    "links": ["task1.html", "task2.html", "task3.html", "task4.html", "team4.html", "task5.html", "team5.html", "task6.html", "team7.html", "task7.html"]
+    "titles": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7"],
+    "links": ["task1.html", "task2.html", "task3.html", "task4.html", "task5.html", "task6.html", "task7.html"]
 }
 
-function buildMenu() {
+teamItems = {
+    "titles": ["Team 5", "Team 7"],
+    "links": ["team4.html", "team7.html"]
+}
+
+function buildMenu(data) {
     let x = "";
-    for (let item in menuItems.titles) {
-        x += '<li><a class="dropdown-item" href="./portfolio/' + menuItems.links[item] + '">' + menuItems.titles[item] + '</a></li>';
+    for (let item in data.titles) {
+        x += '<li><a class="dropdown-item" href="./portfolio/' + data.links[item] + '">' + data.titles[item] + '</a></li>';
     }
     return x;
 }
 
-document.getElementById("#menu").innerHTML = buildMenu()
+document.getElementById("#menuWeek").innerHTML = buildMenu(menuItems)
+document.getElementById("#menuTeam").innerHTML = buildMenu(teamItems)
