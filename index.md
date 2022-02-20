@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>BYU-Idaho, CSE 121B JavaScript Language Portfolio </title>
+    <title>BYU-Idaho, WDD 330 JavaScript Language Portfolio </title>
     <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./portfolio/styles/main.css">
 </head>
@@ -22,7 +22,7 @@
         </ul>
     </nav>
     <header>
-        <h1>BYU-Idaho, CSE 121B JavaScript Language</h1>
+        <h1>BYU-Idaho, WDD 330 JavaScript Language</h1>
         <img src="./portfolio/images/self.png" alt="Photo">
     </header>
     <main>
