@@ -1,11 +1,11 @@
 menuItems = {
-    "titles": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7"],
-    "links": ["task1.html", "task2.html", "task3.html", "task4.html", "task5.html", "task6.html", "task7.html"]
+    "titles": ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8", "Week 9"],
+    "links": ["task1.html", "task2.html", "task3.html", "task4.html", "task5.html", "task6.html", "task7.html", "task8.html", "task9.html"]
 }
 
 teamItems = {
-    "titles": ["Team 5", "Team 7"],
-    "links": ["team4.html", "team7.html"]
+    "titles": ["Team 5", "Team 7", "Team 8"],
+    "links": ["team4.html", "team7.html", "team8.html"]
 }
 
 function buildMenu(data) {
