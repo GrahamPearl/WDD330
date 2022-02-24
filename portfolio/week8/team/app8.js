@@ -1,9 +1,23 @@
 // team Task 8
-const urlBasePath = "http https://swapi.dev/api/people/";
-
 export default class People {
+    people = [];
+
+    constructor(elementId) {
+        this.parentElement = document.getElementById(elementId);
+        this.backButton = this.buildBackButton();
+    }
+
     getAllPeople() {
-        return peopleList;
+        fetch(urlBasePath)
+        .then(response => response.json())
+        .then(data => 
+            { 
+             
+            console.table(data); 
+            
+        })
+
+        return [];
     }
 
     getPersonByID(personID) {
@@ -16,7 +30,7 @@ export default class People {
         this.renderPeopleList(this.parentElement, this.getAllPeople());
         this.addPeopleListener();
         this.backButton.classList.add("hidden");
-        this.comments.showCommentsList();
+        //this.comments.showCommentsList();
     }
 
     renderPeopleList(parent, people) {
@@ -26,7 +40,7 @@ export default class People {
     }
 
     showOnePerson(personID) {
-        const person = this.getHikeByName(personID);
+        const person = this.getPersonByID(personID);
         this.parentElement.innerHTML = "";
         this.parentElement.appendChild(this.renderOnePerson(person));
         this.backButton.classList.remove("hidden");
@@ -39,6 +53,17 @@ export default class People {
                 this.showOnePerson(e.currentTarget.dataset.id);
             });
         });
+    }
+
+    buildBackButton() {
+        const backButton = document.createElement("button");
+        backButton.innerHTML = "&lt;- All People";
+        backButton.addEventListener("touchend", () => {
+            this.showHikeList();
+        });
+        backButton.classList.add("hidden");
+        this.parentElement.before(backButton);
+        return backButton;
     }
 
     renderOnePerson(person) {
@@ -58,3 +83,13 @@ export default class People {
         return item;
     }
 }
+
+
+const urlBasePath = "https://swapi.dev/api/people/";
+
+const starwars = new People('people');
+window.addEventListener('load', () => {
+    starwars.showPeopleList();
+});
+
+
