@@ -1,116 +1,59 @@
 // team Task 8
-export default class People {
-    people = [];
+let backButton = document.getElementById("prev");
+let nextButton = document.getElementById("next");
+let parentElement = document.getElementById("people");
 
-    constructor(elementId) {
-        this.parentElement = document.getElementById(elementId);
-        this.backButton = this.buildPrevfButton();
-        this.nextButton = this.buildNextfButton();        
-    }
-
-    getPersonByID(personID) {
-        return this.getAllPeople().find((people) => people.id === personID);
-    }
-
-    showPeopleList() {
-        this.parentElement.innerHTML = "";
-
-        this.renderPeopleList(this.parentElement, this.getAllPeople());
-        this.addPeopleListener();
-        this.nextButton.classList.add("hidden");
-        this.backButton.classList.add("hidden");
-        //this.comments.showCommentsList();
-    }
-
-    renderOnePerson(person) {
-        const item = document.createElement('div');
-
-        item.innerHTML = `
-
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">${person.name}</h5>
-                <p class="card-text">${person.skin_color}, ${person.hair_color}, ${person.gender}</p>
-                <a href="#" class="btn btn-light">More Details</a>
-            </div>
+function renderOneCharacter(data) {
+    const character = document.createElement("div");
+    character.innerHTML = `<div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">${data.name}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">${data.height}</h6>
+          <p class="card-text">${data.birth_year}</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
         </div>
-        `;
-
-        return item;
-    }
-
-
-    renderPeopleList(parent, people) {
-        people.forEach((person) => {
-            parent.appendChild(this.renderOnePerson(person));
-        });
-    }
-
-    showOnePerson(personID) {
-        const person = this.getPersonByID(personID);
-        this.parentElement.innerHTML = "";
-        this.parentElement.appendChild(this.renderOnePerson(person));
-        this.backButton.classList.remove("hidden");
-    }
-
-    addPeopleListener() {
-        const childrenArray = Array.from(this.parentElement.children);
-        childrenArray.forEach((child) => {
-            child.addEventListener("touchend", (e) => {
-                this.showOnePerson(e.currentTarget.dataset.id);
-            });
-        });
-    }
-
-    buildPrevfButton() {
-        const backButton = document.getElementById("prev");
-        backButton.addEventListener("touchend", () => {
-            this.showPeopleList();
-        });
-        backButton.addEventListener("onclick", () => {
-            alert('Clicked: Prev');
-            this.showPeopleList();
-        });
-
-        backButton.classList.add("hidden");
-        this.parentElement.before(backButton);
-        return backButton;
-    }
-
-    buildNextfButton() {
-        const nextButton = document.getElementById("next");
-        nextButton.addEventListener("touchend", () => {
-            this.showPeopleList();
-        });
-
-        nextButton.addEventListener("onclick", () => {
-            alert('Clicked: Next');
-            this.showPeopleList();
-        });
-
-        nextButton.classList.add("hidden");
-        this.parentElement.before(nextButton);
-        return nextButton;
-    }
-
-    getAllPeople() {
-        const list =
-            fetch(urlBasePath);
-
-        list.then(response => response.json())
-            .then(data => {
-                this.renderPeopleList(this.parentElement, data.results);
-            })
-
-        return [];
-    }
-
+      </div>`;
+    return character;
 }
 
+function renderList(parent, people) {
+    people.forEach((person) => {
+        //console.log(person);
 
-const urlBasePath = "https://swapi.dev/api/people/";
+        parentElement.appendChild(renderOneCharacter(person));
+    });
+}
 
-const starwars = new People('people');
-window.addEventListener('load', () => {
-    starwars.showPeopleList();
-});
+async function getAllPeople(urlSource) {
+    const list = fetch(urlSource);
+
+    list
+        .then((response) => response.json())
+        .then((data) => {
+            //console.table(data);
+
+            if (data.results != undefined) {
+                renderList(parentElement, data.results);
+            }
+
+            if (data.previous != undefined) {
+                backButton.onclick = function() {
+                    let prevURL = data.previous;
+                    parentElement.innerHTML = "";
+                    getAllPeople(prevURL)
+                };
+            }
+            if (data.next != undefined) {
+                nextButton.onclick = function() {
+                    let nextURL = data.next;
+                    parentElement.innerHTML = "";
+                    getAllPeople(nextURL)
+                };
+            }
+        });
+}
+
+let urlBasePath = "https://swapi.dev/api/people/";
+
+getAllPeople(urlBasePath);
