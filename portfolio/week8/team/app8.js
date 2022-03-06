@@ -10,8 +10,7 @@ function renderOneCharacter(data) {
           <h5 class="card-title">${data.name}</h5>
           <h6 class="card-subtitle mb-2 text-muted">${data.height}</h6>
           <p class="card-text">${data.birth_year}</p>
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
+          <a href="#" class="card-link">Card link</a>          
         </div>
       </div>`;
     return character;
@@ -19,7 +18,7 @@ function renderOneCharacter(data) {
 
 function renderList(parent, people) {
     people.forEach((person) => {
-        //console.log(person);
+        // console.log(person);
 
         parentElement.appendChild(renderOneCharacter(person));
     });
@@ -31,7 +30,7 @@ async function getAllPeople(urlSource) {
     list
         .then((response) => response.json())
         .then((data) => {
-            //console.table(data);
+            //    console.table(data);
 
             if (data.results != undefined) {
                 renderList(parentElement, data.results);
