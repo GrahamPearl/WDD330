@@ -27,18 +27,18 @@
         <section>
 
         </section>
-        <form>
-            <label for="admin">Admin:</label>
-            <input id="admin" type="text" name="admin" required length="5">
-            <label for="age">Age:</label>
-            <input id="age" type="number" name="age" value="10" min="18" max="80">
-            <label for="email">Email:</label>
-            <input id="email" type="email" name="email">
+        <form onsubmit="onSubmitSucess()">
+            <label for=" admin ">Admin:</label>
+            <input id="admin " type="text " name="admin " required length="5 ">
+            <label for="age ">Age:</label>
+            <input id="age " type="number " name="age " value="10 " min="18 " max="80 ">
+            <label for="email ">Email:</label>
+            <input id="email " type="email " name="email ">
 
             <p>
-                <label for="grade">Grade?<abbr title="This field is mandatory" aria-label="required">*</abbr></label>
-                <input type="text" id="grade" name="grade" list="grade_list" required pattern="">
-                <datalist id="grade_list">
+                <label for="grade ">Grade?<abbr title="This field is mandatory " aria-label="required ">*</abbr></label>
+                <input type="text " id="grade " name="grade " list="grade_list " required pattern="8|9|10|11|12|Staff ">
+                <datalist id="grade_list ">
                   <option>8</option>
                   <option>9</option>
                   <option>10</option>
@@ -48,26 +48,36 @@
                 </datalist>
             </p>
 
-            <fieldset>
-                <legend>Covid19 Symptoms?<abbr title="This field is mandatory" aria-label="required">*</abbr></legend>
-                <input type="radio" required name="covid19" id="r1" value="yes"><label for="r1">Yes</label>
-                <input type="radio" required name="covid19" id="r2" value="no"><label for="r2">No</label>
-            </fieldset>
-
-            <p class="input-file-wrapper">
-                <label for="upload">Upload doctors note</label>
-                <input type="file" name="" id="upload">
+            <p class="input-file-wrapper ">
+                <label for="upload ">Upload doctors note</label>
+                <input type="file" name=" " id="upload " pattern=".+\.pdf$ " placeholder="Must include .pdf file extension ">
             </p>
+
+            <div>
+                <fieldset>
+                    <legend>Covid19 Symptoms?<abbr title="This field is mandatory " aria-label="required ">*</abbr></legend>
+                    <input type="radio " required name="covid19 " id="r1 " value="yes "><label for="r1 ">Yes</label>
+                    <input type="radio " required name="covid19 " id="r2 " value="no "><label for="r2 ">No</label>
+                </fieldset>
+            </div>
+
             <div>
                 <button>Submit</button>
             </div>
         </form>
     </main>
     <footer>
-        &copy;<span id="year"></span> | Portfolio Revisited | Lesson 10
+        &copy;<span id="year "></span> | Portfolio Revisited | Lesson 10
     </footer>
-    <script type="text/css" src="scripts/main.js"></script>
-    <script src="scripts/task10.js" type="module"></script>
+
+    <script>
+        function onSubmitSucess() {
+            alert("The form was submitted ");
+        }
+    </script>
+
+    <script type="text/css " src="scripts/main.js "></script>
+    <script src="scripts/task10.js " type="module "></script>
 </body>
 
 </html>
