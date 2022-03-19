@@ -4,17 +4,17 @@ menuItems = {
 }
 
 teamItems = {
-    "titles": ["Team 4", "Team 5", "Team 7", "Team 8", "Team 9", "Team 10"],
-    "links": ["team4.html", "team5.html", "team7.html", "team8.html", "team9.html", "team10.html"]
+    "titles": ["Team 4", "Team 5", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12"],
+    "links": ["team4.html", "team5.html", "team7.html", "team8.html", "team9.html", "team10.html", "team11.html", "team12.html"]
 }
 
-function buildMenu(data) {
+function buildMenu(path, data) {
     let x = "";
     for (let item in data.titles) {
-        x += '<li><a class="dropdown-item" href="./portfolio/' + data.links[item] + '">' + data.titles[item] + '</a></li>';
+        x += '<li><a class="dropdown-item" href="' + path + data.links[item] + '">' + data.titles[item] + '</a></li>';
     }
     return x;
 }
 
-document.getElementById("#menuWeek").innerHTML = buildMenu(menuItems)
-document.getElementById("#menuTeam").innerHTML = buildMenu(teamItems)
+document.getElementById("#menuWeek").innerHTML = buildMenu('./portfolio/content/tasks/', menuItems)
+document.getElementById("#menuTeam").innerHTML = buildMenu('./portfolio/content/teams/', teamItems)

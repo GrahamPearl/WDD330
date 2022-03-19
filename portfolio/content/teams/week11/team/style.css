@@ -1,0 +1,46 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+main {
+    min-width: 600px;
+    margin: 0;
+    font-family: 'PT Sans', sans-serif;
+}
+
+form {
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-gap: 16px;
+}
+
+label {
+    grid-column: 1 / 2;
+}
+
+form fieldset,
+form p,
+form input,
+form button,
+form div {
+    grid-column: 2 / 3;
+    width: 100%;
+}
+
+input:invalid {
+    border: 2px solid rgb(255, 0, 0);
+}
+
+input:invalid:required {
+    background-color: red;
+}
+
+input:valid {
+    border: 2px solid black;
+}

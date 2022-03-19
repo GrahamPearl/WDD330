@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>BYU-Idaho, WDD 330 JavaScript Language Portfolio </title>
     <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./portfolio/styles/main.css">
+    <link rel="stylesheet" href="./portfolio/../../../../styles/main.css">
 </head>
 
 <body>
@@ -35,7 +35,7 @@
     <footer>
         &copy;<span id="year"></span> | Biography | Index
     </footer>
-    <script src="scripts/main.js"></script>    
+    <script src="../../scripts/main.js"></script>    
 </body>
 
 </html>
