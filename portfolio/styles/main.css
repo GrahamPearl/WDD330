@@ -88,25 +88,6 @@ nav ul li a {
 }
 
 
-/* ID Selectors */
-
-#favorite-foods,
-#hobbies,
-#places-lived {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: inline-block;
-    text-align: left;
-    vertical-align: top;
-}
-
-#temples {
-    display: grid;
-    grid-template-columns: 1fr;
-}
-
-
 /* Media Queries */
 
 @media only screen and (min-width: 32.5em) {

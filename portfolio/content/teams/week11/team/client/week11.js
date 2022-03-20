@@ -1,7 +1,8 @@
 // Server Address
 import Auth from "./auth.js";
-import Auth from "./client/auth.js";
-import { Errors, makeRequest } from "./client/authHelpers.js";
+import { Errors, makeRequest } from "./authHelpers.js";
+//import Auth from "./client/auth.js";
+//import { Errors, makeRequest } from "./client/authHelpers.js";
 
 const myErrors = new Errors("errors");
 const myAuth = new Auth(myErrors);
