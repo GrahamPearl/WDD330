@@ -1,6 +1,5 @@
-// toggle menu in small view
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import '../bootstrap/dist/css/bootstrap.min.css';
+import '../bootstrap/dist/js/bootstrap.bundle.min';
 
 const menuItems =
     '<div class="container-fluid">' +
@@ -34,9 +33,6 @@ const menuItems =
     '    </form>' +
     '  </div>' +
     '</div>'
-
-
-
 
 //<document.querySelector('#toggleMenu').addEventListener('click', toggleMenu);
 // set current year in footer

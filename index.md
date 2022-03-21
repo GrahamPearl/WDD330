@@ -35,7 +35,7 @@
     <footer>
         &copy;<span id="year"></span> | Biography | Index
     </footer>
-    <script src="../../scripts/main.js"></script>    
+    <script type="text/css" src="../../scripts/main.js"></script>    
 </body>
 
 </html>

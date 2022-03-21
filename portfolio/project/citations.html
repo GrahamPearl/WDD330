@@ -1,5 +1,28 @@
-<form onsubmit="onSubmitCitation()">
-    <label for="url">URL:</label>
-    <input id="url" type="url" name="url" required pattern="https://.*" size="30" required>
-</form>
-<script></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<link href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" rel="stylesheet" />
+<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+
+<link href="../bootstrap/dist//css/bootstrap.min.css" rel="stylesheet">
+<link href="../styles/task10.css" rel="stylesheet">
+
+<body>
+    <div class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Book Search</a>
+            <i class="fa fa-search"></i>
+            <div class="d-flex">
+                <input id="searchFor" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required>
+                <button class="btn btn-outline-success" type="button" onclick="updateBookTable(document.getElementById('searchFor').value)">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+        <table id="table-books" class="table table-dark table-striped"></table>
+    </div>
+
+</body>
+
+<script type="text/javascript" src="./scripts/citation_apa.js"></script>
+
+</html>

@@ -33,14 +33,14 @@ form div {
     width: 100%;
 }
 
-input:invalid {
-    border: 2px solid rgb(255, 0, 0);
+form input:invalid {
+    border: 2px solid rgb(95, 95, 95);
 }
 
-input:invalid:required {
-    background-color: red;
+form input:invalid:required {
+    background-color: rgb(95, 95, 95);
 }
 
-input:valid {
+form input:valid {
     border: 2px solid black;
 }
