@@ -18,7 +18,7 @@ function setOpcode(code) {
 function reqTwo() {
     let data1 = parseInt(document.getElementById("req@1").value)
     let data2 = parseInt(document.getElementById("req@2").value)
-    document.getElementById("answerN").innerHTML = "Answer is: " + solve(data1, data2)
+    document.getElementById("answerN").innerHTML = "Answer is:" + solve(data1, data2)
 }
 
 
@@ -46,7 +46,7 @@ function sumTo() {
         for (let i = 1; i <= valueN; i++)
             sumOf += i
 
-        document.getElementById("answerN").innerText = "Answer: No Error, stores " + sumOf
+        document.getElementById("answerN").innerText = "Answer: No Error, stores" + sumOf
 
     } catch (err) {
         document.getElementById("answerN").innerText = "Answer: Error Occurred"
