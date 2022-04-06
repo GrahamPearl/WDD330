@@ -1,0 +1,6 @@
+[
+    { "type": "Book", "apa6": "Author, Initial. (Year). Book title. City of publication, Country/State: Publisher.", "link": "https://aut.ac.nz.libguides.com/APA6th/books" },
+    { "type": "Journal", "apa6": "Author, Initial. (Year). Title of the article: Subtitle if there is one. Title of the Journal, volume(issues if used), pages. Retrieved from https://journal home page", "link": "https://aut.ac.nz.libguides.com/APA6th/articles" },
+    { "type": "Movie", "apa6": "(Producer), & (Writer/Director). (date). Title of Film [Motion picture]. Country: Publisher.", "link": "https://aut.ac.nz.libguides.com/APA6th/tvfilmvideo" },
+    { "type": "Websites", "apa6": "Author, A. (date). Title of document [Format description]. Retrieved from http://xxx", "link": "https://aut.ac.nz.libguides.com/APA6th/websites" }
+]

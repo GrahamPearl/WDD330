@@ -1,0 +1,4 @@
+https://books.google.co.za/books?id=cOsxlcgtZFYC&hl=en&source=gbs_api
+
+https://books.google.co.za/books/download/NewReference.enw?id=cOsxlcgtZFYC&output=enw
+https://books.google.co.za/books/download/Pawn_Of_Prophecy.ris?id=cOsxlcgtZFYC&output=ris

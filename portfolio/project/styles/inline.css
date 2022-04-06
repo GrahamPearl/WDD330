@@ -1,0 +1,93 @@
+/*
+.citation_book {
+    display: grid;
+    grid-template-columns: [labels] auto [controls] 1fr;
+    grid-auto-flow: row;
+    grid-gap: .8em;
+}
+*/
+
+h1,
+h2,
+h3,
+h4 {
+    color: white;
+}
+
+body {
+    background-repeat: no-repeat;
+    height: 100%;
+    font-family: "Numans", sans-serif;
+    background-color: #343a40;
+    background: "./images/bg.jpg" no-repeat center center;
+    background-size: cover;
+    color: black;
+}
+
+.modal-backdrop {
+    background-color: yellow;
+}
+
+table.table-fit {
+    width: auto !important;
+    table-layout: auto !important;
+}
+
+table.table-fit thead th,
+table.table-fit tfoot th {
+    width: auto !important;
+}
+
+table.table-fit tbody td,
+table.table-fit tfoot td {
+    width: auto !important;
+}
+
+#Modal-View-Search table {
+    color: rgb(0, 0, 0);
+}
+
+.form input,
+.form label {
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+}
+
+input,
+label {
+    color: rgb(255, 255, 255);
+}
+
+input:invalid+span::after {
+    content: '✖';
+}
+
+input:valid+span::after {
+    content: '✓';
+}
+
+.table {
+    color: rgba(245, 245, 245, 0.671);
+}
+
+.table td:not(:nth-child(2)) {
+    width: 10%;
+}
+
+.table td:nth-child(3) a {
+    width: 100%;
+}
+
+.table img {
+    width: 40px;
+}
+
+#searchBtn {
+    width: 10%;
+}
+
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+    color: black;
+    background-color: whitesmoke;
+}

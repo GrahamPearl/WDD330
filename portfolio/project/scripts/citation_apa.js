@@ -1,7 +1,11 @@
+var currentPage = 0;
+
 $("#table-books").bootstrapTable({
     url: "",
     pagination: true,
+    spagingType: "simple",
     search: false,
+    checkboxEnabled: true,
     columns: [{
             field: "title",
             title: "Title",
@@ -16,7 +20,7 @@ $("#table-books").bootstrapTable({
 function updateBookTable(searchFor) {
     searchFor = searchFor.split(' ').join('+');
     console.log("Loading Book [" + searchFor + "] Information");
-    fetch("https://www.googleapis.com/books/v1/volumes?q=" + searchFor)
+    fetch("https://www.googleapis.com/books/v1/volumes?q=" + searchFor + '&maxResults=40&startIndex=' + currentPage)
         .then((response) => {
             if (!response.ok) {
                 throw new Error("HTTP error " + response.status);
