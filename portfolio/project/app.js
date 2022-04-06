@@ -221,6 +221,16 @@ function showAlert() {
 
 var modalSearch = null;
 
+function addModalViews(ModalItem, ModalView) {
+    if (document.getElementById(ModalItem) != null) {
+        if (document.getElementById(ModalView) != null) {
+            modalSearch = new bootstrap.Modal(
+                document.getElementById(ModalView), {}
+            );
+        } else console.log("Unable to find Element ID: " + ModalView);
+    } else console.log("Unable to find Element ID: " + ModalItem);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     const toggle_items = {
         Book: "citation",
@@ -233,6 +243,8 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     if (document.getElementById("navList") != null) {
+        console.log("Loading Links");
+
         let nav = document.getElementById("navList");
         const nav_items = {
             Book: "citation",
@@ -241,47 +253,43 @@ document.addEventListener("DOMContentLoaded", function() {
             Website: "citation",
         };
 
-        for (const [key, value] of Object.entries(nav_items)) {
-            console.log(key, " = ", value);
-            let li = document.createElement("li");
-            let link = document.createElement("a");
-            link.className = "dropdown-item btn-lg btn-primary";
-            link.innerText = key;
-            link.href = "#" + value;
-            link.setAttribute("data-bs-toggle", "modal");
-            link.setAttribute("data-bs-target", link.href);
-            li.addEventListener(
-                "click",
-                function() {
-                    if (citation_selected != link.innerText) {
+        if (nav == null) console.log("Unable to find Element ID: navList");
+        if (nav != null)
+            for (const [key, value] of Object.entries(nav_items)) {
+                console.log(key, " = ", value);
+                let li = document.createElement("li");
+                let link = document.createElement("a");
+                link.className = "dropdown-item btn-lg btn-primary";
+                link.innerText = key;
+                link.href = "#" + value;
+                link.setAttribute("data-bs-toggle", "modal");
+                link.setAttribute("data-bs-target", link.href);
+                li.addEventListener(
+                    "click",
+                    function() {
+                        if (citation_selected != link.innerText) {
+                            citation_selected = link.innerText;
+                            toggleElementCitation(value, "block");
+                        } else toggleElement(value);
                         citation_selected = link.innerText;
-                        toggleElementCitation(value, "block");
-                    } else toggleElement(value);
-                    citation_selected = link.innerText;
-                },
-                false
-            );
-            li.appendChild(link);
-            nav.appendChild(li);
-        }
+                    },
+                    false
+                );
+                li.appendChild(link);
+                nav.appendChild(li);
+            }
+        console.log("Links Loaded");
     }
 
-    if (document.getElementById("Modal-Search") != null)
-    /*
-    modalSearch = new bootstrap.Modal(
-        document.getElementById("Modal-View"),
-        options
-    );        
-    
-        modalSearch = new bootstrap.Modal(
-        document.getElementById("Modal-View"), {
-            keyboard: false
+    if (toggle_items != undefined) {
+        console.log("Setting variables toggle None: toggle_items");
+        for (const [key, value] of Object.entries(toggle_items)) {
+            toggleElement(value, "none");
         }
-    )
-    */
-    {} else alert("No Modal-Search found");
-
-    for (const [key, value] of Object.entries(toggle_items)) {
-        toggleElement(value, "none");
+    } else {
+        console.log("Undefined variable: toggle_items");
     }
+
+    addModalViews("Modal-View-URL", "Modal-View-Search");
+
 });
