@@ -2,8 +2,8 @@ const cacheName = 'shell-content::static';
 var filesToCache = [
     '/offline.html',
     '/styles/inline.css',
-    './images/logo.svg',
-    './images/bg.jpg',
+    '/images/logo.svg',
+    '/images/bg.jpg',
     '/'
 ];
 

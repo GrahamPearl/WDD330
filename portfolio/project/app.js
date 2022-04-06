@@ -158,7 +158,7 @@ function toggleElementCitation(elementID, mode = null) {
     citation_content.innerHTML = buildCitationForm(citation_selected);
 }
 
-$("#table-search-results").bootstrapTable({
+$("#table-search-results").DataTable({
     url: "",
     pagination: true,
     spagingType: "simple",
