@@ -4,8 +4,8 @@ menuItems = {
 }
 
 teamItems = {
-    "titles": ["Team 4", "Team 5", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12"],
-    "links": ["team4.html", "team5.html", "team7.html", "team8.html", "team9.html", "team10.html", "team11.html", "team12.html"]
+    "titles": ["Team 4", "Team 5", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11"],
+    "links": ["team4.html", "team5.html", "team7.html", "team8.html", "team9.html", "team10.html", "team11.html"]
 }
 
 function buildMenu(path, data) {
