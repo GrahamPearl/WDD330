@@ -1,6 +1,6 @@
 "use strict";
 
-var citation_selected = "Book";
+var citation_selected = "None";
 
 /*
 if ("serviceWorker" in navigator) {
@@ -231,18 +231,8 @@ function addModalViews(ModalItem, ModalView) {
     } else console.log("Unable to find Element ID: " + ModalItem);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    const toggle_items = {
-        Book: "citation",
-        Journal: "citation",
-        Movie: "citation",
-        Website: "citation",
-        listCitation: "citation_list",
-        listAPAFormat: "apa6formats",
-        listBlogPosts: "blogposts",
-    };
-
-    if (document.getElementById("navList") != null) {
+function addNavElements(navList) {
+    if (document.getElementById(navList) != null) {
         console.log("Loading Links");
 
         let nav = document.getElementById("navList");
@@ -280,6 +270,18 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         console.log("Links Loaded");
     }
+}
+
+function initialHideToggleElements() {
+    const toggle_items = {
+        Book: "citation",
+        Journal: "citation",
+        Movie: "citation",
+        Website: "citation",
+        listCitation: "citation_list",
+        listAPAFormat: "apa6formats",
+        listBlogPosts: "blogposts",
+    };
 
     if (toggle_items != undefined) {
         console.log("Setting variables toggle None: toggle_items");
@@ -290,6 +292,16 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Undefined variable: toggle_items");
     }
 
-    addModalViews("Modal-View-URL", "Modal-View-Search");
+}
 
+document.addEventListener("DOMContentLoaded", function() {
+    try {
+        addNavElements("navList");
+        addModalViews("Modal-View-URL", "Modal-View-Search");
+        initialHideToggleElements();
+    } catch (err) {
+        console.error("Error: " + err);
+    } finally {
+        console.log("DOMContentLoaded : Construction complete");
+    }
 });

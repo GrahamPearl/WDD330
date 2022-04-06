@@ -7,18 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>BYU-Idaho, WDD 330 JavaScript Language Portfolio</title>
     <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet" />
+
     <link rel="stylesheet" type="text/css" href="./portfolio/styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="./portfolio/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--
     <link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.min.css">
+-->
 
-    <link href="./portfolio/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="./portfolio/styles/navbar.css" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" />
-    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
     <script crossorigin="anonymous" type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="></script>
+    <script crossorigin="anonymous" type="text/javascript" src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
     <script crossorigin="anonymous" type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script crossorigin="anonymous" type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-
     <!---
     -->
 </head>
@@ -62,7 +64,7 @@
 
         <section>
             <div class="container">
-                <table id="tasks-table" class="table datatable" data-toggle="table" data-mdb-loading="true" data-toggle="table" data-show-pagination-switch="false" data-url="/data/items.json">
+                <table id="tasks-table" class="table datatable table-borderless table-hover" data-detail-formatter="rowFormatter" data-mdb-loading="true" data-toggle="table" data-show-pagination-switch="false" data-url="json/items.json">
                     <thead>
                         <tr>
                             <th data-field="week">WEEK</th>
