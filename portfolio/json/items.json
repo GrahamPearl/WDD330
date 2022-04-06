@@ -1,31 +1,48 @@
 [{
-        "week": 0,
-        "topic": "Item 0",
-        "link": "Not Set"
-    },
-    {
         "week": 1,
         "topic": "Item 1",
-        "link": "Not Set"
+        "link": "portfolio/content/tasks/task1.html"
     },
     {
         "week": 2,
-        "topic": "Item 2",
-        "link": "Not Set"
+        "topic": "Ch3: Arrays, Logic, and Loops, Ch4: Functions",
+        "link": "portfolio/content/tasks/task2.html"
     },
     {
         "week": 3,
-        "topic": "Item 3",
-        "link": "Not Set"
+        "topic": "Ch5: Objects, Ch6: Document Object Model, Ch7: Events",
+        "link": "portfolio/content/tasks/task3.html"
     },
     {
         "week": 4,
-        "topic": "Item 4",
-        "link": "Not Set"
+        "topic": "Ch8: Forms, Ch12: Object Oriented Programming",
+        "link": "portfolio/content/tasks/task4.html"
     },
     {
         "week": 5,
-        "topic": "Item 5",
-        "link": "Not Set"
+        "topic": " Ch10: Testing and Debugging",
+        "link": "portfolio/content/tasks/task5.html"
+    },
+    {
+        "week": 7,
+        "topic": "Ch11: Further Functions, Ch13: AJAX",
+        "link": "portfolio/content/tasks/task7.html"
+    },
+    {
+        "week": 8,
+        "topic": "Ch8: Transforms and Transitions, Ch12: Canvas, SVG, and Drag and Drop",
+        "link": "portfolio/content/tasks/task8.html"
+    },
+    {
+        "week": 9,
+        "topic": "Ch9: The Window Object, Ch14: HTML5 APIs",
+        "link": "portfolio/content/tasks/task9.html"
+    },
+    {
+        "week": 10,
+        "topic": "MDN: Validating, MDN: Using Fetch",
+        "link": "portfolio/content/tasks/task10.html"
     }
+
+
 ]
