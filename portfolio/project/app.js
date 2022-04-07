@@ -1,22 +1,69 @@
 "use strict";
+var currentPage = 0;
 
-var citation_selected = "None";
-
-/*
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-        .register("sw.js")
-        .then(function(registration) {
-            console.log(
-                "ServiceWorker registration successful with scope: ",
-                registration.scope
-            );
-        })
-        .catch(function(err) {
-            console.log("ServiceWorker registration failed: ", err);
-        });
+function toggleElement(elementID, mode = null) {
+    console.log("START toggleElement " + elementID);
+    try {
+        try {
+            let item = document.getElementById(elementID);
+            if (item != null)
+                if (mode != null) item.style.display = mode;
+                else if (item.style.display != "none") item.style.display = "none";
+            else item.style.display = "block";
+        } catch (err) {
+            console.error("Error toggleElement: " + err);
+        }
+    } catch (DOMException) {
+        console.error("DOMException toggleElement: ");
+    } finally {
+        console.log("CLOSE toggleElement");
+    }
 }
-*/
+
+function toggleElementCitation(elementID, mode = null) {
+    console.log("START toggleElementCitation " + elementID);
+    try {
+        try {
+            let item = document.getElementById(elementID);
+            if (item != null)
+                if (mode != null) item.style.display = mode;
+                else if (item.style.display != "none") {
+                item.style.display = "none";
+            } else {
+                item.style.display = "block";
+            }
+
+            let citation_content = document.getElementById("citation-content");
+            citation_content.innerHTML = buildCitationForm(citation_selected);
+        } catch (err) {
+            console.error("Error toggleElementCitation: " + err);
+        }
+    } catch (DOMException) {
+        console.error("DOMException toggleElementCitation: ");
+    } finally {
+        console.log("CLOSE toggleElementCitation: " + elementID);
+    }
+}
+
+function addToggleElementsHandler(sourceID, elementID) {
+    console.log("START Adding Event handler - click for " + elementID);
+    try {
+        try {
+            let item = document.getElementById(sourceID);
+            if (item != null) {
+                item.addEventListener("click", toggleElement(elementID));
+            }
+        } catch (err) {
+            console.error("Error addToggleElementsHandler: " + err);
+        }
+    } catch (DOMException) {
+        console.error("DOMException addToggleElementsHandler: ");
+    } finally {
+        console.log("CLOSE Event handler - click added for " + elementID);
+    }
+}
+
+/**/
 
 function rowFormatter(index, row) {
     try {
@@ -36,6 +83,7 @@ function rowFormatter(index, row) {
 
 function buildCitationForm(title) {
     let citation_form = "";
+    console.log("START buildCitationForm");
     try {
         try {
             const citation_book = `
@@ -139,122 +187,93 @@ function buildCitationForm(title) {
     } catch (DOMException) {
         console.error("DOMException buildCitationForm: ");
     }
-
+    console.log("CLOSE buildCitationForm");
     return citation_form;
 }
 
-function toggleElement(elementID, mode = null) {
-    try {
-        try {
-            let item = document.getElementById(elementID);
-            if (item != null)
-                if (mode != null) item.style.display = mode;
-                else if (item.style.display != "none") item.style.display = "none";
-            else item.style.display = "block";
-        } catch (err) {
-            console.error("Error toggleElement: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException toggleElement: ");
-    }
-}
-
-function toggleElementCitation(elementID, mode = null) {
-    try {
-        try {
-            let item = document.getElementById(elementID);
-            if (item != null)
-                if (mode != null) item.style.display = mode;
-                else if (item.style.display != "none") {
-                item.style.display = "none";
-            } else {
-                item.style.display = "block";
-            }
-
-            let citation_content = document.getElementById("citation-content");
-            citation_content.innerHTML = buildCitationForm(citation_selected);
-        } catch (err) {
-            console.error("Error toggleElementCitation: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException toggleElementCitation: ");
-    }
-}
-
-$("#table-search-results").DataTable({
-    url: "",
-    pagination: true,
-    spagingType: "simple",
-    search: false,
-    checkboxEnabled: true,
-    columns: [{
-            field: "publishedDate",
-            title: "Date Published",
-        },
-        {
-            field: "title",
-            title: "Title",
-        },
-    ],
-});
+if (document.getElementById("#table-search-results") != null)
+    $("#table-search-results").DataTable({
+        url: "",
+        pagination: true,
+        spagingType: "simple",
+        search: false,
+        checkboxEnabled: true,
+        columns: [{
+                field: "publishedDate",
+                title: "Date Published",
+            },
+            {
+                field: "title",
+                title: "Title",
+            },
+        ],
+    });
 
 function updateSearchTable(searchFor) {
-    try {
+    console.log("START updateSearchTable");
+    if (searchFor != "")
         try {
-            searchFor = searchFor.split(" ").join("+");
-            console.log("Loading Book [" + searchFor + "] Information");
-            fetch(
-                    "https://www.googleapis.com/books/v1/volumes?q=inauthor+" +
-                    searchFor +
-                    "&maxResults=40&startIndex=" +
-                    currentPage
-                )
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("HTTP error " + response.status);
-                    }
-                    return response.json();
-                })
-                .then((json) => {
-                    let data = json.items;
-                    let books = [];
-                    for (var i = 0; i < data.length; i++) {
-                        var obj = data[i];
-                        var book = {
-                            publishedDate: obj.volumeInfo.publishedDate,
-                            title: obj.volumeInfo.title,
-                        };
-                        books.push(book);
-                    }
-                    console.table(books);
+            try {
+                searchFor = searchFor.split(" ").join("+");
+                console.log("Loading Book [" + searchFor + "] Information");
+                fetch(
+                        "https://www.googleapis.com/books/v1/volumes?q=inauthor+" +
+                        searchFor +
+                        "&maxResults=40&startIndex=" +
+                        currentPage
+                    )
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then((json) => {
+                        let data = json.items;
+                        let books = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var obj = data[i];
+                            var book = {
+                                publishedDate: obj.volumeInfo.publishedDate,
+                                title: obj.volumeInfo.title,
+                            };
+                            books.push(book);
+                        }
+                        console.table(books);
 
-                    $("#table-search-results").bootstrapTable("load", books);
-                    $(document).ready(function() {
-                        $("#table-search-results").DataTable();
+                        $("#table-search-results").bootstrapTable("load", books);
+                        $(document).ready(function() {
+                            $("#table-search-results").DataTable();
+                        });
+
+                        console.log("Data loaded");
                     });
-
-                    console.log("Data loaded");
-                });
-        } catch (err) {
-            console.error("Error addModalViews: " + err);
+            } catch (err) {
+                console.error("Error addModalViews: " + err);
+            }
+        } catch (DOMException) {
+            console.error("DOMException addModalViews: ");
+        } finally {
+            console.log("CLOSE updateSearchTable");
         }
-    } catch (DOMException) {
-        console.error("DOMException addModalViews: ");
-    }
 }
 
 function showAlert() {
+    console.log("START showAlert");
     try {
         try {
             let toFind = document.getElementById("modal-searchFor").value;
             toFind = toFind.split(" ").join("+");
 
+            console.log("SEARCHING FOR: " + toFind);
             updateSearchTable(toFind);
         } catch (err) {
             console.error("Error addModalViews: " + err);
         }
     } catch (DOMException) {
         console.error("DOMException addModalViews: ");
+    } finally {
+        console.log("CLOSE showAlert");
     }
 }
 
@@ -300,7 +319,7 @@ function addNavElements(navList) {
                         let link = document.createElement("a");
                         link.className = "dropdown-item btn-lg btn-primary";
                         link.innerText = key;
-                        link.href = "#" + value;
+                        //link.href = "#" + value;
                         link.setAttribute("data-bs-toggle", "modal");
                         link.setAttribute("data-bs-target", link.href);
                         li.addEventListener(
@@ -340,8 +359,8 @@ function initialHideToggleElements() {
                 listBlogPosts: "blogposts",
             };
 
-            if (toggle_items != undefined) {
-                console.log("Setting variables toggle None: toggle_items");
+            if (toggle_items !== undefined) {
+                console.log("Setting element property toggle to None for toggle_items");
                 for (const [key, value] of Object.entries(toggle_items)) {
                     toggleElement(value, "none");
                 }
@@ -375,12 +394,23 @@ function submitButtonEventHandler() {
     }
 }
 
+function addElementOnHandler(elementID, callback) {
+    if (document.getElementById(elementID) != null) {
+        let item = document.getElementById(elementID);
+        item.addEventListener("onclick", callback);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     try {
         try {
             submitButtonEventHandler();
             addNavElements("navList");
             addModalViews("Modal-View-URL", "Modal-View-Search");
+            addToggleElementsHandler("citation-tab", "citation_list");
+            addToggleElementsHandler("apa6formats-tab", "apa6formats");
+            addToggleElementsHandler("blogposts-tab", "blogposts");
+            addElementOnHandler("modal-search-btn", showAlert());
             initialHideToggleElements();
         } catch (err) {
             console.error("Error DOMContentLoaded: " + err);
@@ -391,3 +421,19 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("DOMContentLoaded : Construction complete");
     }
 });
+
+var citation_selected = "None";
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+        .register("sw.js")
+        .then(function(registration) {
+            console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+            );
+        })
+        .catch(function(err) {
+            console.log("ServiceWorker registration failed: ", err);
+        });
+}
