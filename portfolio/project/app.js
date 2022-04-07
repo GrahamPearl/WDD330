@@ -1,92 +1,30 @@
 "use strict";
+
+var citation_selected = "None";
 var currentPage = 0;
 
-function toggleElement(elementID, mode = null) {
-    console.log("START toggleElement " + elementID);
-    try {
-        try {
-            let item = document.getElementById(elementID);
-            if (item != null)
-                if (mode != null) item.style.display = mode;
-                else if (item.style.display != "none") item.style.display = "none";
-            else item.style.display = "block";
-        } catch (err) {
-            console.error("Error toggleElement: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException toggleElement: ");
-    } finally {
-        console.log("CLOSE toggleElement");
-    }
+if (document.getElementById("submitBtn") != null) {
+    let submitBtn = document.getElementById("submitBtn");
+    submitBtn.addEventListener("click", function(evt) {
+        evt.preventDefault();
+        window.location.replace("");
+        return false;
+    });
 }
-
-function toggleElementCitation(elementID, mode = null) {
-    console.log("START toggleElementCitation " + elementID);
-    try {
-        try {
-            let item = document.getElementById(elementID);
-            if (item != null)
-                if (mode != null) item.style.display = mode;
-                else if (item.style.display != "none") {
-                item.style.display = "none";
-            } else {
-                item.style.display = "block";
-            }
-
-            let citation_content = document.getElementById("citation-content");
-            citation_content.innerHTML = buildCitationForm(citation_selected);
-        } catch (err) {
-            console.error("Error toggleElementCitation: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException toggleElementCitation: ");
-    } finally {
-        console.log("CLOSE toggleElementCitation: " + elementID);
-    }
-}
-
-function addToggleElementsHandler(sourceID, elementID) {
-    console.log("START Adding Event handler - click for " + elementID);
-    try {
-        try {
-            let item = document.getElementById(sourceID);
-            if (item != null) {
-                item.addEventListener("click", toggleElement(elementID));
-            }
-        } catch (err) {
-            console.error("Error addToggleElementsHandler: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException addToggleElementsHandler: ");
-    } finally {
-        console.log("CLOSE Event handler - click added for " + elementID);
-    }
-}
-
-/**/
 
 function rowFormatter(index, row) {
-    try {
-        try {
-            var html = [];
-            $.each(row, function(key, value) {
-                html.push("<p><b>" + key + ":</b> " + value + "</p>");
-            });
-            return html.join("");
-        } catch (err) {
-            console.error("Error rowFormatter: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException rowFormatter: ");
-    }
+    var html = [];
+    $.each(row, function(key, value) {
+        html.push("<p><b>" + key + ":</b> " + value + "</p>");
+    });
+    return html.join("");
 }
 
 function buildCitationForm(title) {
     let citation_form = "";
-    console.log("START buildCitationForm");
     try {
-        try {
-            const citation_book = `
+
+        const citation_book = `
     <div class="col">
         <div class="input-group">
             <input id="Book-Author" type="text" class="form-control mb-3" placeholder="Author" aria-label="Author" />
@@ -104,7 +42,7 @@ function buildCitationForm(title) {
             <input id="Book-Year" type="date" class="form-control mb-3" placeholder="Year" aria-label="Year" minViewMode:"year" />
         </div>
     </div>`;
-            const citation_journal = `
+        const citation_journal = `
     <div class="col">
         <div class="input-group">
             <input id="Journal-Author" type="text" class="form-control mb-3" placeholder="Author" aria-label="Author" />
@@ -129,7 +67,7 @@ function buildCitationForm(title) {
             <input id="Journal-Pages" type="text" class="form-control mb-3" placeholder="Pages" aria-label="Pages" />
         </div>
     </div>`;
-            const citation_movie = `
+        const citation_movie = `
     <div class="col">
         <div class="input-group">
             <input id="Movie-Producer" type="text" class="form-control mb-3" placeholder="Producer" aria-label="Producer" />
@@ -151,7 +89,7 @@ function buildCitationForm(title) {
         </div>
     </div>`;
 
-            const citation_website = `
+        const citation_website = `
     <div class="col">
         <div class="input-group">
             <input id="Website-Author" type="text" class="form-control mb-3" placeholder="Author" aria-label="Author" />
@@ -177,176 +115,118 @@ function buildCitationForm(title) {
         </div>
     </div>`;
 
-            if (title == "Book") citation_form = citation_book;
-            if (title == "Journal") citation_form = citation_journal;
-            if (title == "Movie") citation_form = citation_movie;
-            if (title == "Website") citation_form = citation_website;
-        } catch (err) {
-            console.error("Error buildCitationForm: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException buildCitationForm: ");
+        if (title == "Book") citation_form = citation_book;
+        if (title == "Journal") citation_form = citation_journal;
+        if (title == "Movie") citation_form = citation_movie;
+        if (title == "Website") citation_form = citation_website;
+    } catch (error) {
+        console.error("Error buildCitationForm: " + error);
     }
-    console.log("CLOSE buildCitationForm");
     return citation_form;
 }
 
-if (document.getElementById("#table-search-results") != null)
-    $("#table-search-results").DataTable({
-        url: "",
-        pagination: true,
-        spagingType: "simple",
-        search: false,
-        checkboxEnabled: true,
-        columns: [{
-                field: "publishedDate",
-                title: "Date Published",
-            },
-            {
-                field: "title",
-                title: "Title",
-            },
-        ],
-    });
-
-function updateSearchTable(searchFor) {
-    console.log("START updateSearchTable");
-    if (searchFor != "")
-        try {
-            try {
-                searchFor = searchFor.split(" ").join("+");
-                console.log("Loading Book [" + searchFor + "] Information");
-                fetch(
-                        "https://www.googleapis.com/books/v1/volumes?q=inauthor+" +
-                        searchFor +
-                        "&maxResults=40&startIndex=" +
-                        currentPage
-                    )
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("HTTP error " + response.status);
-                        }
-                        return response.json();
-                    })
-                    .then((json) => {
-                        let data = json.items;
-                        let books = [];
-                        for (var i = 0; i < data.length; i++) {
-                            var obj = data[i];
-                            var book = {
-                                publishedDate: obj.volumeInfo.publishedDate,
-                                title: obj.volumeInfo.title,
-                            };
-                            books.push(book);
-                        }
-                        console.table(books);
-
-                        $("#table-search-results").bootstrapTable("load", books);
-                        $(document).ready(function() {
-                            $("#table-search-results").DataTable();
-                        });
-
-                        console.log("Data loaded");
-                    });
-            } catch (err) {
-                console.error("Error addModalViews: " + err);
-            }
-        } catch (DOMException) {
-            console.error("DOMException addModalViews: ");
-        } finally {
-            console.log("CLOSE updateSearchTable");
-        }
+function toggleElement(elementID, mode = null) {
+    try {
+        let item = document.getElementById(elementID);
+        if (item != null)
+            if (mode != null) item.style.display = mode;
+            else if (item.style.display != "none") item.style.display = "none";
+        else item.style.display = "block";
+    } catch (error) {
+        console.error("Error toggleElement Found: " + error);
+    }
 }
 
-function showAlert() {
-    console.log("START showAlert");
+function toggleElementCitation(elementID, mode = null) {
     try {
-        try {
-            let toFind = document.getElementById("modal-searchFor").value;
-            toFind = toFind.split(" ").join("+");
-
-            console.log("SEARCHING FOR: " + toFind);
-            updateSearchTable(toFind);
-        } catch (err) {
-            console.error("Error addModalViews: " + err);
+        let item = document.getElementById(elementID);
+        if (item != null)
+            if (mode != null) item.style.display = mode;
+            else if (item.style.display != "none") {
+            item.style.display = "none";
+        } else {
+            item.style.display = "block";
         }
-    } catch (DOMException) {
-        console.error("DOMException addModalViews: ");
-    } finally {
-        console.log("CLOSE showAlert");
+
+        let citation_content = document.getElementById("citation-content");
+        citation_content.innerHTML = buildCitationForm(citation_selected);
+    } catch (error) {
+        console.error("Error toggleElementCitation Found: " + error);
     }
+}
+
+$("#table-search-results").bootstrapTable({
+    url: "",
+    pagination: true,
+    spagingType: "simple",
+    search: false,
+    checkboxEnabled: true,
+    columns: [{
+            field: "publishedDate",
+            title: "Date Published",
+        },
+        {
+            field: "title",
+            title: "Title",
+        },
+    ],
+});
+
+function updateSearchTable(searchFor) {
+    try {
+        searchFor = searchFor.split(" ").join("+");
+        console.log("Loading Book [" + searchFor + "] Information");
+        fetch(
+                "https://www.googleapis.com/books/v1/volumes?q=inauthor+" +
+                searchFor +
+                "&maxResults=40&startIndex=" +
+                currentPage
+            )
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("HTTP error " + response.status);
+                }
+                return response.json();
+            })
+            .then((json) => {
+                let data = json.items;
+                let books = [];
+                for (var i = 0; i < data.length; i++) {
+                    var obj = data[i];
+                    var book = {
+                        publishedDate: obj.volumeInfo.publishedDate,
+                        title: obj.volumeInfo.title,
+                    };
+                    books.push(book);
+                }
+                console.table(books);
+
+                $("#table-search-results").bootstrapTable("load", books);
+                //$("#table-search-results").bootstrapTable({ data: books });
+                //$("#table-search-results").bootstrapTable('load', data);
+
+
+                $(document).ready(function() {
+                    $("#table-search-results").DataTable();
+                });
+
+                console.log("Data loaded");
+            });
+    } catch (error) {
+        console.error("Error updateSearchTable: " + error);
+    }
+}
+
+function showAlert(elementID) {
+    let toFind = document.getElementById(elementID).value;
+    toFind = toFind.split(" ").join("+");
+
+    updateSearchTable(toFind);
 }
 
 var modalSearch = null;
 
-function addModalViews(ModalItem, ModalView) {
-    try {
-        try {
-            if (document.getElementById(ModalItem) != null) {
-                if (document.getElementById(ModalView) != null) {
-                    modalSearch = new bootstrap.Modal(
-                        document.getElementById(ModalView), {}
-                    );
-                } else console.log("Unable to find Element ID: " + ModalView);
-            } else console.log("Unable to find Element ID: " + ModalItem);
-        } catch (err) {
-            console.error("Error addModalViews: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException addModalViews: ");
-    }
-}
-
-function addNavElements(navList) {
-    try {
-        try {
-            if (document.getElementById(navList) != null) {
-                console.log("Loading Links");
-
-                let nav = document.getElementById("navList");
-                const nav_items = {
-                    Book: "citation",
-                    Journal: "citation",
-                    Movie: "citation",
-                    Website: "citation",
-                };
-
-                if (nav == null) console.log("Unable to find Element ID: navList");
-                if (nav != null)
-                    for (const [key, value] of Object.entries(nav_items)) {
-                        console.log(key, " = ", value);
-                        let li = document.createElement("li");
-                        let link = document.createElement("a");
-                        link.className = "dropdown-item btn-lg btn-primary";
-                        link.innerText = key;
-                        //link.href = "#" + value;
-                        link.setAttribute("data-bs-toggle", "modal");
-                        link.setAttribute("data-bs-target", link.href);
-                        li.addEventListener(
-                            "click",
-                            function() {
-                                if (citation_selected != link.innerText) {
-                                    citation_selected = link.innerText;
-                                    toggleElementCitation(value, "block");
-                                } else toggleElement(value);
-                                citation_selected = link.innerText;
-                            },
-                            false
-                        );
-                        li.appendChild(link);
-                        nav.appendChild(li);
-                    }
-                console.log("Links Loaded");
-            }
-        } catch (err) {
-            console.error("Error addNavElements: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException addNavElements: ");
-    }
-}
-
-function initialHideToggleElements() {
+document.addEventListener("DOMContentLoaded", function() {
     try {
         try {
             const toggle_items = {
@@ -359,74 +239,60 @@ function initialHideToggleElements() {
                 listBlogPosts: "blogposts",
             };
 
-            if (toggle_items !== undefined) {
-                console.log("Setting element property toggle to None for toggle_items");
-                for (const [key, value] of Object.entries(toggle_items)) {
-                    toggleElement(value, "none");
+            if (document.getElementById("navList") != null) {
+                let nav = document.getElementById("navList");
+                const nav_items = {
+                    Book: "citation",
+                    Journal: "citation",
+                    Movie: "citation",
+                    Website: "citation",
+                };
+
+                for (const [key, value] of Object.entries(nav_items)) {
+                    console.log(key, " = ", value);
+                    let li = document.createElement("li");
+                    let link = document.createElement("a");
+                    link.className = "dropdown-item btn-lg btn-primary";
+                    link.innerText = key;
+                    link.href = "#" + value;
+                    link.setAttribute("data-bs-toggle", "modal");
+                    link.setAttribute("data-bs-target", link.href);
+                    li.addEventListener(
+                        "click",
+                        function() {
+                            if (citation_selected != link.innerText) {
+                                citation_selected = link.innerText;
+                                toggleElementCitation(value, "block");
+                            } else toggleElement(value);
+                            citation_selected = link.innerText;
+                        },
+                        false
+                    );
+                    li.appendChild(link);
+                    nav.appendChild(li);
                 }
-            } else {
-                console.log("Undefined variable: toggle_items");
             }
-        } catch (err) {
-            console.error("Error initialHideToggleElements: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException initialHideToggleElements: ");
-    }
-}
 
-function submitButtonEventHandler() {
-    try {
-        try {
-            if (document.getElementById("submitBtn") != null) {
-                let submitBtn = document.getElementById("submitBtn");
-                submitBtn.addEventListener("click", function(evt) {
-                    evt.preventDefault();
-                    window.location.replace("");
-                    return false;
-                });
+            if (document.getElementById("Modal-Search") != null)
+                modalSearch = new bootstrap.Modal(
+                    document.getElementById("Modal-View-URL"), {}
+                );
+            else alert("No Modal-Search found");
+
+            for (const [key, value] of Object.entries(toggle_items)) {
+                toggleElement(value, "none");
             }
-        } catch (err) {
-            console.error("Error rowFormatter: " + err);
+        } catch (error) {
+            console.error("Error DOMContentLoaded: " + error);
         }
     } catch (DOMException) {
-        console.error("DOMException rowFormatter: ");
-    }
-}
-
-function addElementOnHandler(elementID, callback) {
-    if (document.getElementById(elementID) != null) {
-        let item = document.getElementById(elementID);
-        item.addEventListener("onclick", callback);
-    }
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    try {
-        try {
-            submitButtonEventHandler();
-            addNavElements("navList");
-            addModalViews("Modal-View-URL", "Modal-View-Search");
-            addToggleElementsHandler("citation-tab", "citation_list");
-            addToggleElementsHandler("apa6formats-tab", "apa6formats");
-            addToggleElementsHandler("blogposts-tab", "blogposts");
-            addElementOnHandler("modal-search-btn", showAlert());
-            initialHideToggleElements();
-        } catch (err) {
-            console.error("Error DOMContentLoaded: " + err);
-        }
-    } catch (DOMException) {
-        console.error("DOMException: DOMContentLoaded");
-    } finally {
-        console.log("DOMContentLoaded : Construction complete");
+        console.error("Error DOMContentLoaded: " + error);
     }
 });
 
-var citation_selected = "None";
-
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-        .register("sw.js")
+        .register("/portfolio/project/sw.js")
         .then(function(registration) {
             console.log(
                 "ServiceWorker registration successful with scope: ",

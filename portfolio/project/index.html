@@ -51,29 +51,41 @@
             --->
         <div class="container-fluid">
             <!-- Navbar content -->
-            <a class="navbar-brand" href="../../index.html">Home</a>
+            <a class="navbar-brand" href="#">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Add Citation</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Add Citation
+              </a>
                         <ul id="navList" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"></ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" aria-current="page" href="#citation_list" id="citation-tab">Citation List</a>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#citation_list" onclick="toggleElement('citation_list')" id="citation-tab">Citation List</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" aria-current="page" href="#apa6formats" id="apa6formats-tab">APA 6 Formats</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" aria-current="page" href="#blogposts" id="blogposts-tab">Blog Posts</a>
-                    </li>
-                </ul>
-            </div>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#apa6formats" onclick="toggleElement('apa6formats')">APA 6 Formats</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="#blogposts"
+                onclick="toggleElement('blogposts')"
+                >Blog Posts</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
-    <main class="main">
-        <section id="citation" class="d-print-none">
+    <main class="main">    
+        <section id="#citation" class="d-print-none">
             <br/>
             <h3>Add Citation</h3>
             <div class="m-4">
@@ -84,88 +96,80 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
-            </div>
         </section>
 
         <section>
-            <div class="modal fade" id="Modal-View-URL" aria-hidden="true" aria-labelledby="Modal-View-URL" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">API Search</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><input id="modal-searchFor" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required /></p>
-                            <p class="text-secondary"><small></small></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button id="modal-search-btn" class="btn btn-primary" data-bs-target="#Modal-View-Search" data-bs-toggle="modal" data-bs-dismiss="modal">Search</button>
-                        </div>
-                    </div>
+        <div class="modal fade" id="Modal-View-URL" aria-hidden="true" aria-labelledby="Modal-View-URL" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">API Search</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><input id="modal-searchFor" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required /></p>
+                    <p class="text-secondary"><small></small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" data-bs-target="#Modal-View-Search" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="showAlert('modal-searchFor')">Search</button>
                 </div>
             </div>
-
-            <div class="modal fade" id="Modal-View-Search" aria-hidden="true" aria-labelledby="Modal-View-Results" tabindex="-1">
-                <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="Modal-View-Results">API Search Results</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="content">
-                                <table id="table-search-results" class="table" data-toggle="table" data-click-to-select="true" data-single-select="true" data-pagination="true">
-                                    <thead class="navbar-dark bg-success">
-                                        <tr>
-                                            <th data-field="publishedDate">Date Published</th>
-                                            <th data-field="title">Title</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-target="#Modal-View-URL" data-bs-toggle="modal" data-bs-dismiss="modal">Back to API Search</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add To Citations</button>
-                        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="Modal-View-Search" aria-hidden="true" aria-labelledby="Modal-View-Results" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Modal-View-Results">API Search Results</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="content">
+                        <table id="table-search-results" class="table table-fit table-striped" data-toggle="table" data-click-to-select="true" data-single-select="true" data-pagination="true">
+                        </table>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-target="#Modal-View-URL" data-bs-toggle="modal" data-bs-dismiss="modal">Back to API Search</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add To Citations</button>
+                </div>
             </div>
+        </div>
+    </div>
         </section>
 
         <section id="citation_list">
-            <div>
-                <br />
-                <div class="table-responsive">
-                    <div class="table-title">
-                        <div class="container-fluid">
-                            <a class="navbar-brand" href="#">Citation List Search</a>
-                            <div class="d-flex">
-                                <input id="searchFor" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required />
-                                <button class="btn btn-outline-success" type="button">
+            <br />
+            <div class="table-responsive">
+              <div class="table-title">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">Citation List Search</a>
+                        <div class="d-flex">
+                            <input id="searchFor" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required />
+                            <button class="btn btn-outline-success" type="button">
                       Search
                     </button>
-                            </div>
                         </div>
-                    </div>
-                    <table id="table" class="table datatable table-borderless table-hover" data-detail-formatter="rowFormatter" data-mdb-loading="true" data-toggle="table" data-show-pagination-switch="false" data-url="json/data.json">
-                        <thead class="navbar-dark bg-success">
-                            <tr>
-                                <th data-field="type"><span class="ml-2">TYPE</span></th>
-                                <th data-field="apa6"><span class="ml-2">APA6</span></th>
-                                <th data-field="link" data-formatter="LinkFormatter">
-                                    <span class="ml-2">LINK</span>
-                                </th>
-                                <th data-formatter="ActionFormatter" data-toggle="tooltip">
-                                    <span class="ml-4">ACTION</span>
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
             </div>
+        </div>
+        <table id="table" class="table datatable table-borderless table-hover" data-detail-formatter="rowFormatter" data-mdb-loading="true" data-toggle="table" data-show-pagination-switch="false" data-url="json/data.json">
+            <thead class="navbar-dark bg-success">
+                <tr>
+                    <th data-field="type"><span class="ml-2">TYPE</span></th>
+                    <th data-field="apa6"><span class="ml-2">APA6</span></th>
+                    <th data-field="link" data-formatter="LinkFormatter">
+                        <span class="ml-2">LINK</span>
+                    </th>
+                    <th data-formatter="ActionFormatter" data-toggle="tooltip">
+                        <span class="ml-4">ACTION</span>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+
+
+        </div>
         </section>
 
         <section>
@@ -201,6 +205,7 @@
                     </tr>
                 </thead>
             </table>
+
         </section>
 
         <section id="blogposts" class="" role="tabpanel" aria-labelledby="citation-tab">
@@ -215,15 +220,20 @@
                     </tr>
                 </thead>
             </table>
+
         </section>
-    </main>
+        </main>
 
-    <div class="dialog-container"></div>
+        <div class="dialog-container"></div>
 
-    <div class="loader"></div>
-    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"></script>
+        <div class="loader"></div>
 
-    <script type="module" src="app.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <!---
+    <script type="text/html" src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    -->
+
+        <script src="app.js" async></script>
 </body>
 
 </html>
