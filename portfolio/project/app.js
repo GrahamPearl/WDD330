@@ -1,9 +1,49 @@
 "use strict";
 
+function LinkFormatter(value, row, index) {
+    return '<a class="btn btn-primary" href="' + row.link + '">Link</a>';
+}
+
+function PhotoFormatter(value, row, index) {
+    return '<img src="' + row.photo + '" width="40px" class="rounded-circle">';
+}
+
+function doDeleteEvent(rowIndex) {
+
+    let $table = $('#table');
+    let ids = $.map($table.bootstrapTable("getSelections"), function(row) {
+        return row.link;
+    });
+
+    console.log("Selected ID-links for deleting: " + ids)
+
+    if (ids == "") {
+        alert("Please select a row by checking");
+    } else {
+        $table.bootstrapTable("remove", {
+            field: "link",
+            values: ids,
+        });
+    }
+
+}
+
+function ActionFormatter(value, row, index) {
+    console.log("Adding Row Action Formatter: " + index);
+    return (
+        `<div class="btn-group" role="group" aria-label="Basic example">
+    <a class="btn btn-primary"><i class="fa-solid fa-scissors"></i></a>
+    <a class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
+    <a class="btn btn-primary"><i class="fa-solid fa-trash" onclick="doDeleteEvent(` +
+        index +
+        `)"></i></a>                                                
+</div>`
+    );
+}
+
 var citation_selected = "None";
 var citation_list = [];
 var currentPage = 0;
-
 
 if (document.getElementById("submitBtn") != null) {
     let submitBtn = document.getElementById("submitBtn");
@@ -161,7 +201,8 @@ $("#table-search-results").bootstrapTable({
     columns: [{
             field: "year",
             title: "Year",
-        }, {
+        },
+        {
             field: "title",
             title: "Title",
         },
@@ -183,13 +224,12 @@ function updateSearchTable(searchFor) {
     console.log("BEGIN updateSearchTable: " + searchFor);
     if (searchFor != "")
         try {
-
             var myObjectFields = {
-                "authors": "author",
-                "title": "title",
-                "publisher": "city",
-                "publishedDate": "year",
-                "infoLink": "link",
+                authors: "author",
+                title: "title",
+                publisher: "city",
+                publishedDate: "year",
+                infoLink: "link",
             };
 
             //var fieldList = Object.keys(myObjectFields).join();
@@ -220,8 +260,9 @@ function updateSearchTable(searchFor) {
 
                         for (const [key, value] of Object.entries(myObjectFields)) {
                             if (item.hasOwnProperty(key)) {
-                                if (Array.isArray(item[key])) book[value] = item[key].join(', ');
-                                if (typeof item[key] == 'string') book[value] = item[key];
+                                if (Array.isArray(item[key]))
+                                    book[value] = item[key].join(", ");
+                                if (typeof item[key] == "string") book[value] = item[key];
                             } else book[value] = "None";
                         }
 
@@ -252,11 +293,11 @@ function showAlert(elementID) {
 }
 
 function bookDetailsFormatter(index, row) {
-    var html = []
+    var html = [];
     $each(row, function(key, value) {
-        html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-    })
-    return html.join('')
+        html.push("<p><b>" + key + ":</b> " + value + "</p>");
+    });
+    return html.join("");
 }
 
 var modalSearch = null;
@@ -295,6 +336,25 @@ function setupToggleItems() {
             nav.appendChild(li);
         }
     }
+}
+
+function addTableListenerRemoveElement(tableElementID) {
+    $(document).ready(function() {
+        var table = $("#" + tableElementID).DataTable();
+
+        $("#" + tableElementID + " tbody").on("click", "tr", function() {
+            if ($(this).hasClass("selected")) {
+                $(this).removeClass("selected");
+            } else {
+                table.$("tr.selected").removeClass("selected");
+                $(this).addClass("selected");
+            }
+        });
+
+        $("#button").click(function() {
+            table.row(".selected").remove().draw(false);
+        });
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -336,6 +396,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
             }
 
+            // addTableListenerRemoveElement(table);
         } catch (error) {
             console.error("Error DOMContentLoaded: " + error);
         }
