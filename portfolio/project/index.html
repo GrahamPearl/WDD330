@@ -51,7 +51,7 @@
             --->
         <div class="container-fluid">
             <!-- Navbar content -->
-            <a class="navbar-brand" href="#">Home</a>
+            <a class="navbar-brand" href="../../index.html">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -106,8 +106,8 @@
                     <h5 class="modal-title" id="">API Search</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <p><input id="modal-searchFor" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required /></p>
+                <div class="modal-body">                    
+                    <p><span>Author</span><input id="modal-searchFor" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" required /></p>
                     <p class="text-secondary"><small></small></p>
                 </div>
                 <div class="modal-footer">
@@ -118,7 +118,7 @@
         </div>
     </div>
     <div class="modal fade" id="Modal-View-Search" aria-hidden="true" aria-labelledby="Modal-View-Results" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="Modal-View-Results">API Search Results</h5>
@@ -126,12 +126,24 @@
                 </div>
                 <div class="modal-body">
                     <div id="content">
-                        <table id="table-search-results" class="table table-fit table-striped" data-toggle="table" data-click-to-select="true" data-single-select="true" data-pagination="true">
+                        <table id="table-search-results" 
+                        class="table table-bordered table-striped" 
+                        data-toggle="table"                        
+                        >                        
+                            <thead>
+                                <tr>                                    
+                                    <th data-field="year">Year</th>
+                                    <th data-field="title">Title</th>
+                                    <th data-field="link" data-formatter="LinkFormatter"></th>
+                                </tr>
+                            </thead>   
                         </table>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-target="#Modal-View-URL" data-bs-toggle="modal" data-bs-dismiss="modal">Back to API Search</button>
+                    <button class="btn btn-secondary" data-bs-target="#Modal-View-URL" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-solid fa-angle-left"></i></button>
+                    <button class="btn btn-secondary" data-bs-target="#Modal-View-URL" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-solid fa-angle-right"></i></button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add To Citations</button>
                 </div>
             </div>

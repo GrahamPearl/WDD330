@@ -1,7 +1,9 @@
 "use strict";
 
 var citation_selected = "None";
+var citation_list = [];
 var currentPage = 0;
+
 
 if (document.getElementById("submitBtn") != null) {
     let submitBtn = document.getElementById("submitBtn");
@@ -23,7 +25,6 @@ function rowFormatter(index, row) {
 function buildCitationForm(title) {
     let citation_form = "";
     try {
-
         const citation_book = `
     <div class="col">
         <div class="input-group">
@@ -157,64 +158,90 @@ function toggleElementCitation(elementID, mode = null) {
 
 $("#table-search-results").bootstrapTable({
     url: "",
-    pagination: true,
-    spagingType: "simple",
-    search: false,
-    checkboxEnabled: true,
     columns: [{
-            field: "publishedDate",
-            title: "Date Published",
-        },
-        {
+            field: "year",
+            title: "Year",
+        }, {
             field: "title",
             title: "Title",
+        },
+        {
+            field: "link",
+            title: "Link",
+            formatter: LinkFormatter,
         },
     ],
 });
 
+function extactIfFouond(field) {
+    if (field !== undefined)
+        if (field !== null) return field;
+        else return "Empty";
+}
+
 function updateSearchTable(searchFor) {
-    try {
-        searchFor = searchFor.split(" ").join("+");
-        console.log("Loading Book [" + searchFor + "] Information");
-        fetch(
-                "https://www.googleapis.com/books/v1/volumes?q=inauthor+" +
-                searchFor +
-                "&maxResults=40&startIndex=" +
-                currentPage
-            )
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("HTTP error " + response.status);
-                }
-                return response.json();
-            })
-            .then((json) => {
-                let data = json.items;
-                let books = [];
-                for (var i = 0; i < data.length; i++) {
-                    var obj = data[i];
-                    var book = {
-                        publishedDate: obj.volumeInfo.publishedDate,
-                        title: obj.volumeInfo.title,
-                    };
-                    books.push(book);
-                }
-                console.table(books);
+    console.log("BEGIN updateSearchTable: " + searchFor);
+    if (searchFor != "")
+        try {
 
-                $("#table-search-results").bootstrapTable("load", books);
-                //$("#table-search-results").bootstrapTable({ data: books });
-                //$("#table-search-results").bootstrapTable('load', data);
+            var myObjectFields = {
+                "authors": "author",
+                "title": "title",
+                "publisher": "city",
+                "publishedDate": "year",
+                "infoLink": "link",
+            };
 
+            //var fieldList = Object.keys(myObjectFields).join();
 
-                $(document).ready(function() {
-                    $("#table-search-results").DataTable();
+            searchFor = searchFor.split(" ").join("+");
+            console.log("Loading Book [" + searchFor + "] Information");
+            fetch(
+                    'https://www.googleapis.com/books/v1/volumes?q=inauthor:"' +
+                    searchFor +
+                    '"&maxResults=40&startIndex=' +
+                    currentPage
+                )
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("HTTP error " + response.status);
+                    }
+                    return response.json();
+                })
+                .then((json) => {
+                    let data = json.items;
+                    let books = [];
+
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i].volumeInfo;
+
+                        console.log(item);
+                        let book = {};
+
+                        for (const [key, value] of Object.entries(myObjectFields)) {
+                            if (item.hasOwnProperty(key)) {
+                                if (Array.isArray(item[key])) book[value] = item[key].join(', ');
+                                if (typeof item[key] == 'string') book[value] = item[key];
+                            } else book[value] = "None";
+                        }
+
+                        books.push(book);
+                    }
+
+                    console.table(books);
+                    if (!$.fn.DataTable.isDataTable("#table-search-results")) {
+                        $("#table-search-results").bootstrapTable("load", books);
+                    } else {
+                        $("#table-search-results").DataTable().clear().draw();
+                        $("#table-search-results").bootstrapTable("load", books);
+                    }
+
+                    console.log("Data loaded");
                 });
-
-                console.log("Data loaded");
-            });
-    } catch (error) {
-        console.error("Error updateSearchTable: " + error);
-    }
+        } catch (error) {
+            console.error("Error updateSearchTable: " + error);
+        }
+    console.log("CLOSE updateSearchTable");
 }
 
 function showAlert(elementID) {
@@ -224,11 +251,57 @@ function showAlert(elementID) {
     updateSearchTable(toFind);
 }
 
+function bookDetailsFormatter(index, row) {
+    var html = []
+    $each(row, function(key, value) {
+        html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+    })
+    return html.join('')
+}
+
 var modalSearch = null;
+
+function setupToggleItems() {
+    if (document.getElementById("navList") != null) {
+        let nav = document.getElementById("navList");
+        const nav_items = {
+            Book: "citation",
+            Journal: "citation",
+            Movie: "citation",
+            Website: "citation",
+        };
+
+        for (const [key, value] of Object.entries(nav_items)) {
+            console.log(key, " = ", value);
+            let li = document.createElement("li");
+            let link = document.createElement("a");
+            link.className = "dropdown-item btn-lg btn-primary";
+            link.innerText = key;
+            link.href = "#" + value;
+            link.setAttribute("data-bs-toggle", "modal");
+            link.setAttribute("data-bs-target", link.href);
+            li.addEventListener(
+                "click",
+                function() {
+                    if (citation_selected != link.innerText) {
+                        citation_selected = link.innerText;
+                        toggleElementCitation(value, "block");
+                    } else toggleElement(value);
+                    citation_selected = link.innerText;
+                },
+                false
+            );
+            li.appendChild(link);
+            nav.appendChild(li);
+        }
+    }
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     try {
         try {
+            setupToggleItems();
+
             const toggle_items = {
                 Book: "citation",
                 Journal: "citation",
@@ -239,38 +312,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 listBlogPosts: "blogposts",
             };
 
-            if (document.getElementById("navList") != null) {
-                let nav = document.getElementById("navList");
-                const nav_items = {
-                    Book: "citation",
-                    Journal: "citation",
-                    Movie: "citation",
-                    Website: "citation",
-                };
-
-                for (const [key, value] of Object.entries(nav_items)) {
-                    console.log(key, " = ", value);
-                    let li = document.createElement("li");
-                    let link = document.createElement("a");
-                    link.className = "dropdown-item btn-lg btn-primary";
-                    link.innerText = key;
-                    link.href = "#" + value;
-                    link.setAttribute("data-bs-toggle", "modal");
-                    link.setAttribute("data-bs-target", link.href);
-                    li.addEventListener(
-                        "click",
-                        function() {
-                            if (citation_selected != link.innerText) {
-                                citation_selected = link.innerText;
-                                toggleElementCitation(value, "block");
-                            } else toggleElement(value);
-                            citation_selected = link.innerText;
-                        },
-                        false
-                    );
-                    li.appendChild(link);
-                    nav.appendChild(li);
-                }
+            for (const [key, value] of Object.entries(toggle_items)) {
+                toggleElement(value, "none");
             }
 
             if (document.getElementById("Modal-Search") != null)
@@ -279,9 +322,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 );
             else alert("No Modal-Search found");
 
-            for (const [key, value] of Object.entries(toggle_items)) {
-                toggleElement(value, "none");
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("/portfolio/project/sw.js")
+                    .then(function(registration) {
+                        console.log(
+                            "ServiceWorker registration successful with scope: ",
+                            registration.scope
+                        );
+                    })
+                    .catch(function(err) {
+                        console.log("ServiceWorker registration failed: ", err);
+                    });
             }
+
         } catch (error) {
             console.error("Error DOMContentLoaded: " + error);
         }
@@ -289,17 +343,3 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error("Error DOMContentLoaded: " + error);
     }
 });
-
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-        .register("/portfolio/project/sw.js")
-        .then(function(registration) {
-            console.log(
-                "ServiceWorker registration successful with scope: ",
-                registration.scope
-            );
-        })
-        .catch(function(err) {
-            console.log("ServiceWorker registration failed: ", err);
-        });
-}
