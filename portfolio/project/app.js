@@ -1,5 +1,9 @@
 "use strict";
 
+var citation_selected = "None";
+var citation_list = [];
+var currentPage = 0;
+
 function LinkFormatter(value, row, index) {
     return '<a class="btn btn-primary" href="' + row.link + '">Link</a>';
 }
@@ -9,13 +13,12 @@ function PhotoFormatter(value, row, index) {
 }
 
 function doDeleteEvent(rowIndex) {
-
-    let $table = $('#table');
+    let $table = $("#table");
     let ids = $.map($table.bootstrapTable("getSelections"), function(row) {
         return row.link;
     });
 
-    console.log("Selected ID-links for deleting: " + ids)
+    console.log("Selected ID-links for deleting: " + ids);
 
     if (ids == "") {
         alert("Please select a row by checking");
@@ -25,7 +28,6 @@ function doDeleteEvent(rowIndex) {
             values: ids,
         });
     }
-
 }
 
 function ActionFormatter(value, row, index) {
@@ -40,10 +42,6 @@ function ActionFormatter(value, row, index) {
 </div>`
     );
 }
-
-var citation_selected = "None";
-var citation_list = [];
-var currentPage = 0;
 
 if (document.getElementById("submitBtn") != null) {
     let submitBtn = document.getElementById("submitBtn");
@@ -180,6 +178,7 @@ function toggleElement(elementID, mode = null) {
 
 function toggleElementCitation(elementID, mode = null) {
     try {
+
         let item = document.getElementById(elementID);
         if (item != null)
             if (mode != null) item.style.display = mode;
@@ -189,8 +188,10 @@ function toggleElementCitation(elementID, mode = null) {
             item.style.display = "block";
         }
 
-        let citation_content = document.getElementById("citation-content");
-        citation_content.innerHTML = buildCitationForm(citation_selected);
+        if (document.getElementById("citation-content") != null) {
+            let citation_content = document.getElementById("citation-content");
+            citation_content.innerHTML = buildCitationForm(citation_selected);
+        }
     } catch (error) {
         console.error("Error toggleElementCitation Found: " + error);
     }
@@ -357,43 +358,113 @@ function addTableListenerRemoveElement(tableElementID) {
     });
 }
 
+function initialSetupOfComponents() {
+    setupToggleItems();
+
+    const toggle_items = {
+        Book: "citation",
+        Journal: "citation",
+        Movie: "citation",
+        Website: "citation",
+        listCitation: "citation_list",
+        listAPAFormat: "apa6formats",
+        listBlogPosts: "blogposts",
+    };
+
+    for (const [key, value] of Object.entries(toggle_items)) {
+        toggleElement(value, "none");
+    }
+
+    if (document.getElementById("Modal-Search") != null)
+        modalSearch = new bootstrap.Modal(
+            document.getElementById("Modal-View-URL"), {}
+        );
+    else alert("No Modal-Search found");
+}
+
+function initialSetupOfLocalStorage() {
+    if (typeof localStorage.bookmark == "undefined") {
+        localStorage.bookmark = "";
+    }
+}
+
+function checkIfCitationExists() {
+    if (document.getElementById("citation-content") != null) {
+        let citation_content = document.getElementById("citation-content");
+        if (citation_selected != "Book") {
+            alert("Not supported in this version yet - please wait for next version");
+        } else {
+            let fields = [
+                "Book-Author",
+                "Book-Title",
+                "Book-City",
+                "Book-City",
+                "Book-State",
+                "Book-Year",
+            ];
+            let new_citation = [];
+            for (let item in fields)
+                if (document.getElementById(item) != null) {
+                    new_citation[fields[item]] = document.getElementById(fields[item]);
+                } else
+                    console.error(
+                        "Warning checkIfCitationExists: elementID " +
+                        fields[item] +
+                        " not found in document"
+                    );
+        }
+    }
+}
+
+function addCitationToCitationList() {
+    try {
+        if (checkIfCitationExists()) {}
+
+        alert("Clicked");
+    } catch (err) {
+        console.error("Error in addCitationToCitationList: " + err);
+    }
+}
+
+function initialSetupOfEventHandlers() {
+    const event_items = {
+        "citation-content-submit-btn": addCitationToCitationList,
+    };
+
+    for (const [key, value] of Object.entries(event_items)) {
+        if (document.getElementById(key) != null) {
+            console.log("Adding EventListener onclick to " + key);
+            document.getElementById(key).addEventListener("click", value);
+        } else
+            console.log(
+                "Unable to add EventListener onclick to " + key + ", missing element"
+            );
+    }
+}
+
+function initialSetupOfServiceWorkers() {
+    navigator.serviceWorker
+        .register("/portfolio/project/sw.js")
+        .then(function(registration) {
+            console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+            );
+        })
+        .catch(function(err) {
+            console.log("ServiceWorker registration failed: ", err);
+        });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     try {
         try {
-            setupToggleItems();
-
-            const toggle_items = {
-                Book: "citation",
-                Journal: "citation",
-                Movie: "citation",
-                Website: "citation",
-                listCitation: "citation_list",
-                listAPAFormat: "apa6formats",
-                listBlogPosts: "blogposts",
-            };
-
-            for (const [key, value] of Object.entries(toggle_items)) {
-                toggleElement(value, "none");
-            }
-
-            if (document.getElementById("Modal-Search") != null)
-                modalSearch = new bootstrap.Modal(
-                    document.getElementById("Modal-View-URL"), {}
-                );
-            else alert("No Modal-Search found");
+            initialSetupOfComponents();
+            initialSetupOfLocalStorage();
+            initialSetupOfEventHandlers();
 
             if ("serviceWorker" in navigator) {
-                navigator.serviceWorker
-                    .register("/portfolio/project/sw.js")
-                    .then(function(registration) {
-                        console.log(
-                            "ServiceWorker registration successful with scope: ",
-                            registration.scope
-                        );
-                    })
-                    .catch(function(err) {
-                        console.log("ServiceWorker registration failed: ", err);
-                    });
+                initialSetupOfServiceWorkers();
             }
 
             // addTableListenerRemoveElement(table);
