@@ -485,8 +485,8 @@ function addCitationToCitationList() {
             localStorage.citations.split(";").includes(JSON.stringify(new_citation))
         ) {
             alert("Duplicate citation entry already exists");
-        } else {
-            localStorage.citations += JSON.stringify(new_citation) + ";";
+        } else {                
+                localStorage.citations += JSON.stringify(new_citation)+";";
             alert("Added citation to Citation List: " + JSON.stringify(new_citation));
         }
     } catch (err) {
@@ -564,11 +564,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     },
                 ],
             });
-
-
-            localStorage.citations = "";
+           
             download(localStorage.citations, "local.json", "text/plain")
             */
+            //localStorage.citations = "";
             initialSetupOfComponents();
             initialSetupOfLocalStorage();
             initialSetupOfEventHandlers();

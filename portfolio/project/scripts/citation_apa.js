@@ -30,7 +30,10 @@ async function getAllCitations(citations) {
 
 let parentElement = document.getElementById("citations-cards");
 
-let text = "[" + localStorage.citations.replace(',', ' ') + "]";
+let text = localStorage.citations; //.replace(',', ' ') 
+    text =  "[" +text.slice(0, -1)+ "]";
+console.log("localStorageL: before"+localStorage.citations);
+console.log("localStorageL:  after"+text);
 text = text.replace(';', ',');
 let cite = JSON.parse(text);
 //getAllCitations(localStorage.citations);
