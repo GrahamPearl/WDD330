@@ -404,17 +404,9 @@ function loadCitationsFromLocalStorage() {
                 console.log("Loaded from LocalStorage, item: " + item);
             }
         }
-
     } catch (err) {
         console.error("Error in loadCitationsFromLocalStorage: " + err);
     }
-}
-
-function initialSetupOfLocalStorage() {
-    if (typeof localStorage.citations == "undefined") {
-        localStorage.citations = "";
-    } else
-        loadCitationsFromLocalStorage();
 }
 
 function download(content, fileName, contentType) {
@@ -422,14 +414,33 @@ function download(content, fileName, contentType) {
     var file = new Blob([content], { type: contentType });
     a.href = URL.createObjectURL(file);
     a.download = fileName;
-    a.click();
+    a.click;
+}
+
+function addDownloadAnchor() {
+    let anchor = `<button id="downloader" type="submit" class="btn btn-primary" 
+        onclick="download(
+            localStorage.citations,
+            "local.json",
+            "text/plain"
+        ))">Submit</button>`;
+    return anchor;
+}
+
+function initialSetupOfLocalStorage() {
+    if (typeof localStorage.citations == "undefined") {
+        localStorage.citations = "";
+    } else {
+        loadCitationsFromLocalStorage();
+        if (document.getElementById("citation_download") != null)
+            document.getElementById("citation_download").appendChild(addDownloadAnchor);
+    }
 }
 
 function generateNewCitationOfBook() {
     let fields = [
         "Book-Author",
         "Book-Title",
-        "Book-City",
         "Book-City",
         "Book-State",
         "Book-Year",
@@ -449,6 +460,22 @@ function generateNewCitationOfBook() {
     return new_citation;
 }
 
+function formatCitationBook(citation) {
+    let fields_in_order = {
+        "Book-Author": " (",
+        "Book-Year": "). ",
+        "Book-Title": ". ",
+        "Book-City": ", ",
+        "Book-State": ".",
+    };
+    let formattedCitation = "";
+
+    for (const [key, value] of Object.entries(fields_in_order)) {
+        formattedCitation += citation[key] + value;
+    }
+    return formattedCitation;
+}
+
 function buildNewCitation() {
     let new_citation = null;
     if (document.getElementById("citation-content") != null) {
@@ -456,26 +483,25 @@ function buildNewCitation() {
             alert("Not supported in this version yet - please wait for next version");
         } else {
             new_citation = {
-                "type": citation_selected,
-                "apa6": generateNewCitationOfBook(),
-                "link": "#"
+                type: citation_selected,
+                apa6: formatCitationBook(generateNewCitationOfBook()),
+                link: "#",
             };
         }
     }
     return new_citation;
 }
 
-function addCitationBook(citation) {}
-
 function addCitationToCitationList() {
     try {
         let new_citation = buildNewCitation();
         // checkIfCitationExists
-        if (localStorage.citations.split(";").includes(JSON.stringify(new_citation))) {
+        if (
+            localStorage.citations.split(";").includes(JSON.stringify(new_citation))
+        ) {
             alert("Duplicate citation entry already exists");
         } else {
             localStorage.citations += JSON.stringify(new_citation) + ";";
-            //addCitationBook(new_citation);
             alert("Added citation to Citation List: " + JSON.stringify(new_citation));
         }
     } catch (err) {
@@ -517,7 +543,7 @@ document.addEventListener("DOMContentLoaded", function() {
     try {
         try {
             //localStorage.citations = "";
-            //download(localStorage.citations, 'local.json', 'text/plain');
+
             initialSetupOfComponents();
             initialSetupOfLocalStorage();
             initialSetupOfEventHandlers();
@@ -525,9 +551,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if ("serviceWorker" in navigator) {
                 initialSetupOfServiceWorkers();
             }
-
-
-
             // addTableListenerRemoveElement(table);
         } catch (error) {
             console.error("Error DOMContentLoaded: " + error);
