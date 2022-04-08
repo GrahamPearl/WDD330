@@ -178,7 +178,6 @@ function toggleElement(elementID, mode = null) {
 
 function toggleElementCitation(elementID, mode = null) {
     try {
-
         let item = document.getElementById(elementID);
         if (item != null)
             if (mode != null) item.style.display = mode;
@@ -304,123 +303,181 @@ function bookDetailsFormatter(index, row) {
 var modalSearch = null;
 
 function setupToggleItems() {
-    if (document.getElementById("navList") != null) {
-        let nav = document.getElementById("navList");
-        const nav_items = {
-            Book: "citation",
-            Journal: "citation",
-            Movie: "citation",
-            Website: "citation",
-        };
+    try {
+        if (document.getElementById("navList") != null) {
+            let nav = document.getElementById("navList");
+            const nav_items = {
+                Book: "citation",
+                Journal: "citation",
+                Movie: "citation",
+                Website: "citation",
+            };
 
-        for (const [key, value] of Object.entries(nav_items)) {
-            console.log(key, " = ", value);
-            let li = document.createElement("li");
-            let link = document.createElement("a");
-            link.className = "dropdown-item btn-lg btn-primary";
-            link.innerText = key;
-            link.href = "#" + value;
-            link.setAttribute("data-bs-toggle", "modal");
-            link.setAttribute("data-bs-target", link.href);
-            li.addEventListener(
-                "click",
-                function() {
-                    if (citation_selected != link.innerText) {
+            for (const [key, value] of Object.entries(nav_items)) {
+                console.log(key, " = ", value);
+                let li = document.createElement("li");
+                let link = document.createElement("a");
+                link.className = "dropdown-item btn-lg btn-primary";
+                link.innerText = key;
+                link.href = "#" + value;
+                link.setAttribute("data-bs-toggle", "modal");
+                link.setAttribute("data-bs-target", link.href);
+                li.addEventListener(
+                    "click",
+                    function() {
+                        if (citation_selected != link.innerText) {
+                            citation_selected = link.innerText;
+                            toggleElementCitation(value, "block");
+                        } else toggleElement(value);
                         citation_selected = link.innerText;
-                        toggleElementCitation(value, "block");
-                    } else toggleElement(value);
-                    citation_selected = link.innerText;
-                },
-                false
-            );
-            li.appendChild(link);
-            nav.appendChild(li);
+                    },
+                    false
+                );
+                li.appendChild(link);
+                nav.appendChild(li);
+            }
         }
+    } catch (err) {
+        console.error("Error in setupToggleItems: " + err);
     }
 }
 
 function addTableListenerRemoveElement(tableElementID) {
-    $(document).ready(function() {
-        var table = $("#" + tableElementID).DataTable();
+    try {
+        $(document).ready(function() {
+            var table = $("#" + tableElementID).DataTable();
 
-        $("#" + tableElementID + " tbody").on("click", "tr", function() {
-            if ($(this).hasClass("selected")) {
-                $(this).removeClass("selected");
-            } else {
-                table.$("tr.selected").removeClass("selected");
-                $(this).addClass("selected");
-            }
-        });
+            $("#" + tableElementID + " tbody").on("click", "tr", function() {
+                if ($(this).hasClass("selected")) {
+                    $(this).removeClass("selected");
+                } else {
+                    table.$("tr.selected").removeClass("selected");
+                    $(this).addClass("selected");
+                }
+            });
 
-        $("#button").click(function() {
-            table.row(".selected").remove().draw(false);
+            $("#button").click(function() {
+                table.row(".selected").remove().draw(false);
+            });
         });
-    });
+    } catch (err) {
+        console.error("Error in addTableListenerRemoveElement: " + err);
+    }
 }
 
 function initialSetupOfComponents() {
-    setupToggleItems();
+    try {
+        setupToggleItems();
 
-    const toggle_items = {
-        Book: "citation",
-        Journal: "citation",
-        Movie: "citation",
-        Website: "citation",
-        listCitation: "citation_list",
-        listAPAFormat: "apa6formats",
-        listBlogPosts: "blogposts",
-    };
+        const toggle_items = {
+            Book: "citation",
+            Journal: "citation",
+            Movie: "citation",
+            Website: "citation",
+            listCitation: "citation_list",
+            listAPAFormat: "apa6formats",
+            listBlogPosts: "blogposts",
+        };
 
-    for (const [key, value] of Object.entries(toggle_items)) {
-        toggleElement(value, "none");
+        for (const [key, value] of Object.entries(toggle_items)) {
+            toggleElement(value, "none");
+        }
+
+        if (document.getElementById("Modal-Search") != null)
+            modalSearch = new bootstrap.Modal(
+                document.getElementById("Modal-View-URL"), {}
+            );
+        else alert("No Modal-Search found");
+    } catch (err) {
+        console.error("Error in initialSetupOfComponents: " + err);
     }
+}
 
-    if (document.getElementById("Modal-Search") != null)
-        modalSearch = new bootstrap.Modal(
-            document.getElementById("Modal-View-URL"), {}
-        );
-    else alert("No Modal-Search found");
+function loadCitationsFromLocalStorage() {
+    try {
+        if (
+            typeof localStorage.citations != "undefined" &&
+            localStorage.citations !== ""
+        ) {
+            let arrayItems = localStorage.citations.split(";");
+            for (let item of arrayItems) {
+                console.log("Loaded from LocalStorage, item: " + item);
+            }
+        }
+
+    } catch (err) {
+        console.error("Error in loadCitationsFromLocalStorage: " + err);
+    }
 }
 
 function initialSetupOfLocalStorage() {
-    if (typeof localStorage.bookmark == "undefined") {
-        localStorage.bookmark = "";
-    }
+    if (typeof localStorage.citations == "undefined") {
+        localStorage.citations = "";
+    } else
+        loadCitationsFromLocalStorage();
 }
 
-function checkIfCitationExists() {
+function download(content, fileName, contentType) {
+    var a = document.createElement("a");
+    var file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+}
+
+function generateNewCitationOfBook() {
+    let fields = [
+        "Book-Author",
+        "Book-Title",
+        "Book-City",
+        "Book-City",
+        "Book-State",
+        "Book-Year",
+    ];
+    var new_citation = {};
+    for (const item of fields) {
+        if (document.getElementById(item) != null) {
+            new_citation[item] = document.getElementById(item).value;
+        } else
+            console.error(
+                "Warning checkIfCitationExists: elementID " +
+                item +
+                " not found in document"
+            );
+    }
+    console.log("Generated Citation: " + new_citation);
+    return new_citation;
+}
+
+function buildNewCitation() {
+    let new_citation = null;
     if (document.getElementById("citation-content") != null) {
-        let citation_content = document.getElementById("citation-content");
         if (citation_selected != "Book") {
             alert("Not supported in this version yet - please wait for next version");
         } else {
-            let fields = [
-                "Book-Author",
-                "Book-Title",
-                "Book-City",
-                "Book-City",
-                "Book-State",
-                "Book-Year",
-            ];
-            let new_citation = [];
-            for (let item in fields)
-                if (document.getElementById(item) != null) {
-                    new_citation[fields[item]] = document.getElementById(fields[item]);
-                } else
-                    console.error(
-                        "Warning checkIfCitationExists: elementID " +
-                        fields[item] +
-                        " not found in document"
-                    );
+            new_citation = {
+                "type": citation_selected,
+                "apa6": generateNewCitationOfBook(),
+                "link": "#"
+            };
         }
     }
+    return new_citation;
 }
+
+function addCitationBook(citation) {}
 
 function addCitationToCitationList() {
     try {
-        if (checkIfCitationExists()) {}
-
-        alert("Clicked");
+        let new_citation = buildNewCitation();
+        // checkIfCitationExists
+        if (localStorage.citations.split(";").includes(JSON.stringify(new_citation))) {
+            alert("Duplicate citation entry already exists");
+        } else {
+            localStorage.citations += JSON.stringify(new_citation) + ";";
+            //addCitationBook(new_citation);
+            alert("Added citation to Citation List: " + JSON.stringify(new_citation));
+        }
     } catch (err) {
         console.error("Error in addCitationToCitationList: " + err);
     }
@@ -459,6 +516,8 @@ function initialSetupOfServiceWorkers() {
 document.addEventListener("DOMContentLoaded", function() {
     try {
         try {
+            //localStorage.citations = "";
+            //download(localStorage.citations, 'local.json', 'text/plain');
             initialSetupOfComponents();
             initialSetupOfLocalStorage();
             initialSetupOfEventHandlers();
@@ -466,6 +525,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if ("serviceWorker" in navigator) {
                 initialSetupOfServiceWorkers();
             }
+
+
 
             // addTableListenerRemoveElement(table);
         } catch (error) {
