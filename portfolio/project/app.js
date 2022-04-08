@@ -14,7 +14,7 @@ function PhotoFormatter(value, row, index) {
 
 function doDeleteEvent(rowIndex) {
     let $table = $("#table");
-    let ids = $.map($table.bootstrapTable("getSelections"), function(row) {
+    let ids = $.map($table.bootstrapTable("getSelections"), function (row) {
         return row.link;
     });
 
@@ -45,7 +45,7 @@ function ActionFormatter(value, row, index) {
 
 if (document.getElementById("submitBtn") != null) {
     let submitBtn = document.getElementById("submitBtn");
-    submitBtn.addEventListener("click", function(evt) {
+    submitBtn.addEventListener("click", function (evt) {
         evt.preventDefault();
         window.location.replace("");
         return false;
@@ -54,7 +54,7 @@ if (document.getElementById("submitBtn") != null) {
 
 function rowFormatter(index, row) {
     var html = [];
-    $.each(row, function(key, value) {
+    $.each(row, function (key, value) {
         html.push("<p><b>" + key + ":</b> " + value + "</p>");
     });
     return html.join("");
@@ -170,7 +170,7 @@ function toggleElement(elementID, mode = null) {
         if (item != null)
             if (mode != null) item.style.display = mode;
             else if (item.style.display != "none") item.style.display = "none";
-        else item.style.display = "block";
+            else item.style.display = "block";
     } catch (error) {
         console.error("Error toggleElement Found: " + error);
     }
@@ -182,10 +182,10 @@ function toggleElementCitation(elementID, mode = null) {
         if (item != null)
             if (mode != null) item.style.display = mode;
             else if (item.style.display != "none") {
-            item.style.display = "none";
-        } else {
-            item.style.display = "block";
-        }
+                item.style.display = "none";
+            } else {
+                item.style.display = "block";
+            }
 
         if (document.getElementById("citation-content") != null) {
             let citation_content = document.getElementById("citation-content");
@@ -219,11 +219,11 @@ function updateSearchTable(searchFor) {
             searchFor = searchFor.split(" ").join("+");
             console.log("Loading Book [" + searchFor + "] Information");
             fetch(
-                    'https://www.googleapis.com/books/v1/volumes?q=inauthor:"' +
-                    searchFor +
-                    '"&maxResults=40&startIndex=' +
-                    currentPage
-                )
+                'https://www.googleapis.com/books/v1/volumes?q=inauthor:"' +
+                searchFor +
+                '"&maxResults=40&startIndex=' +
+                currentPage
+            )
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error("HTTP error " + response.status);
@@ -276,7 +276,7 @@ function showAlert(elementID) {
 
 function bookDetailsFormatter(index, row) {
     var html = [];
-    $each(row, function(key, value) {
+    $each(row, function (key, value) {
         html.push("<p><b>" + key + ":</b> " + value + "</p>");
     });
     return html.join("");
@@ -306,7 +306,7 @@ function setupToggleItems() {
                 link.setAttribute("data-bs-target", link.href);
                 li.addEventListener(
                     "click",
-                    function() {
+                    function () {
                         if (citation_selected != link.innerText) {
                             citation_selected = link.innerText;
                             toggleElementCitation(value, "block");
@@ -326,10 +326,10 @@ function setupToggleItems() {
 
 function addTableListenerRemoveElement(tableElementID) {
     try {
-        $(document).ready(function() {
+        $(document).ready(function () {
             var table = $("#" + tableElementID).DataTable();
 
-            $("#" + tableElementID + " tbody").on("click", "tr", function() {
+            $("#" + tableElementID + " tbody").on("click", "tr", function () {
                 if ($(this).hasClass("selected")) {
                     $(this).removeClass("selected");
                 } else {
@@ -338,7 +338,7 @@ function addTableListenerRemoveElement(tableElementID) {
                 }
             });
 
-            $("#button").click(function() {
+            $("#button").click(function () {
                 table.row(".selected").remove().draw(false);
             });
         });
@@ -433,7 +433,7 @@ function generateNewCitationOfBook() {
     var new_citation = {};
     for (const item of fields) {
         if (document.getElementById(item) != null) {
-            new_citation[item] = document.getElementById(item).value;
+            new_citation[item.replace('"','')] = document.getElementById(item).value;
         } else
             console.error(
                 "Warning checkIfCitationExists: elementID " +
@@ -480,14 +480,15 @@ function buildNewCitation() {
 function addCitationToCitationList() {
     try {
         let new_citation = buildNewCitation();
-        // checkIfCitationExists
+        let newItem = JSON.stringify(new_citation).replaceAll('"','');
         if (
-            localStorage.citations.split(";").includes(JSON.stringify(new_citation))
+            localStorage.citations.split(";").includes(newItem)
         ) {
             alert("Duplicate citation entry already exists");
-        } else {                
-                localStorage.citations += JSON.stringify(new_citation)+";";
-            alert("Added citation to Citation List: " + JSON.stringify(new_citation));
+        } else {
+            
+            localStorage.citations += newItem + ";";
+            alert("Added citation to Citation List: " + newItem);
         }
     } catch (err) {
         console.error("Error in addCitationToCitationList: " + err);
@@ -513,75 +514,108 @@ function initialSetupOfEventHandlers() {
 function initialSetupOfServiceWorkers() {
     navigator.serviceWorker
         .register("/portfolio/project/sw.js")
-        .then(function(registration) {
+        .then(function (registration) {
             console.log(
                 "ServiceWorker registration successful with scope: ",
                 registration.scope
             );
         })
-        .catch(function(err) {
+        .catch(function (err) {
             console.log("ServiceWorker registration failed: ", err);
         });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+function convertLocalStorageToJSON(localData) {
+    let text = localData; //.replace(',', ' ') 
+    text = "[" + text.slice(0, -1) + "]";
+    console.log("localStorageL: before" + localStorage.citations.replaceAll('"',''));
+    console.log("localStorageL:  after" + text.replaceAll('"',''));
+    text = text.replace(';', ',');
+    return JSON.parse(text);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
     try {
         try {
 
             $("#table-search-results").bootstrapTable({
                 url: "",
                 columns: [{
-                        field: "year",
-                        title: "Year",
-                    },
-                    {
-                        field: "title",
-                        title: "Title",
-                    },
-                    {
-                        field: "link",
-                        title: "Link",
-                        formatter: LinkFormatter,
-                    },
+                    field: "year",
+                    title: "Year",
+                },
+                {
+                    field: "title",
+                    title: "Title",
+                },
+                {
+                    field: "link",
+                    title: "Link",
+                    formatter: LinkFormatter,
+                },
                 ],
             });
 
             /*
+
             $("#table").bootstrapTable({
                 url: "",
                 columns: [{
-                        field: "type",
-                        title: "Type",
-                    },
-                    {
-                        field: "apa6",
-                        title: "Apa6",
-                    },
-                    {
-                        field: "link",
-                        title: "Link",
-                        formatter: LinkFormatter,
-                    },
+                    field: null,
+                    title: "state",
+                }, {
+                    field: "type",
+                    title: "Type",
+                }, {
+                    field: "apa6",
+                    title: "Apa6",
+                }, {
+                    field: "link",
+                    title: "Link",
+                    formatter: LinkFormatter,
+                },
+                {
+                    field: null,
+                },
                 ],
             });
-           
-            download(localStorage.citations, "local.json", "text/plain")
             */
-            //localStorage.citations = "";
+
+            //download(localStorage.citations, "local.json", "text/plain")
+
+            localStorage.citations = "";
             initialSetupOfComponents();
             initialSetupOfLocalStorage();
             initialSetupOfEventHandlers();
 
 
-            console.log(localStorage.citations);
-            /*let items = JSON.parse(localStorage.citations).replace(';', ',');
+            try {
+                let items = convertLocalStorageToJSON(localStorage.citations);
+                var table = "";
+                if ($.fn.dataTable.isDataTable('#table')) {
 
-            if (!$.fn.DataTable.isDataTable("#table")) {
-                $("#table").bootstrapTable("load", items);
-            } else {
-                $("#table").DataTable().clear().draw();
-                $("#table").bootstrapTable("load", items);
+                    table.destroy();
+                    $('#table').empty();
+                }
+
+                const mappedFields = items.map(({ apa6, type, link }) => ["apa6", "type", "link"])
+                console.log("LOCALSTORAGE = " + JSON.stringify(items));
+                console.log("MAPPED VALUE = " + mappedFields);
+                // Working Solution: https://embed.plnkr.co/plunk/2BzDEu
+
+
+                var dataItems = eval('[{"COLUMNS":[{ "title": "apa6"}, { "title": "type"}, { "title": "link"}],"DATA":[' + mappedFields + ']}]');
+                table = $('#table').DataTable({
+                    "data": dataItems[0].DATA,
+                    "columns": dataItems[0].COLUMNS,
+                    paging: false,
+                    searching: false
+                });
+
+            } catch (error) {
+                console.error("Error Filling of localStorage into table: " + error);
             }
+            /*
             */
 
             if ("serviceWorker" in navigator) {
