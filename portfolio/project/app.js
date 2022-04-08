@@ -196,24 +196,6 @@ function toggleElementCitation(elementID, mode = null) {
     }
 }
 
-$("#table-search-results").bootstrapTable({
-    url: "",
-    columns: [{
-            field: "year",
-            title: "Year",
-        },
-        {
-            field: "title",
-            title: "Title",
-        },
-        {
-            field: "link",
-            title: "Link",
-            formatter: LinkFormatter,
-        },
-    ],
-});
-
 function extactIfFouond(field) {
     if (field !== undefined)
         if (field !== null) return field;
@@ -269,7 +251,7 @@ function updateSearchTable(searchFor) {
                         books.push(book);
                     }
 
-                    console.table(books);
+                    //console.table(books);
                     if (!$.fn.DataTable.isDataTable("#table-search-results")) {
                         $("#table-search-results").bootstrapTable("load", books);
                     } else {
@@ -414,17 +396,7 @@ function download(content, fileName, contentType) {
     var file = new Blob([content], { type: contentType });
     a.href = URL.createObjectURL(file);
     a.download = fileName;
-    a.click;
-}
-
-function addDownloadAnchor() {
-    let anchor = `<button id="downloader" type="submit" class="btn btn-primary" 
-        onclick="download(
-            localStorage.citations,
-            "local.json",
-            "text/plain"
-        ))">Submit</button>`;
-    return anchor;
+    a.click();
 }
 
 function initialSetupOfLocalStorage() {
@@ -432,8 +404,21 @@ function initialSetupOfLocalStorage() {
         localStorage.citations = "";
     } else {
         loadCitationsFromLocalStorage();
-        if (document.getElementById("citation_download") != null)
-            document.getElementById("citation_download").appendChild(addDownloadAnchor);
+
+        /*
+        if (document.getElementById("citation_download") != null) {
+            document.getElementById(
+                "citation_download"
+            ).innerHTML = `<button id="downloader" class="btn btn-primary">Download</button>`;
+            document
+                .getElementById("downloader")
+                .addEventListener(
+                    "click",
+                    console.log("Feature will be in next version"),
+                    false
+                );
+        }
+        */
     }
 }
 
@@ -542,16 +527,71 @@ function initialSetupOfServiceWorkers() {
 document.addEventListener("DOMContentLoaded", function() {
     try {
         try {
-            //localStorage.citations = "";
 
+            $("#table-search-results").bootstrapTable({
+                url: "",
+                columns: [{
+                        field: "year",
+                        title: "Year",
+                    },
+                    {
+                        field: "title",
+                        title: "Title",
+                    },
+                    {
+                        field: "link",
+                        title: "Link",
+                        formatter: LinkFormatter,
+                    },
+                ],
+            });
+
+            /*
+            $("#table").bootstrapTable({
+                url: "",
+                columns: [{
+                        field: "type",
+                        title: "Type",
+                    },
+                    {
+                        field: "apa6",
+                        title: "Apa6",
+                    },
+                    {
+                        field: "link",
+                        title: "Link",
+                        formatter: LinkFormatter,
+                    },
+                ],
+            });
+
+
+            localStorage.citations = "";
+            download(localStorage.citations, "local.json", "text/plain")
+            */
             initialSetupOfComponents();
             initialSetupOfLocalStorage();
             initialSetupOfEventHandlers();
 
+
+            console.log(localStorage.citations);
+            /*let items = JSON.parse(localStorage.citations).replace(';', ',');
+
+            if (!$.fn.DataTable.isDataTable("#table")) {
+                $("#table").bootstrapTable("load", items);
+            } else {
+                $("#table").DataTable().clear().draw();
+                $("#table").bootstrapTable("load", items);
+            }
+            */
+
             if ("serviceWorker" in navigator) {
                 initialSetupOfServiceWorkers();
             }
-            // addTableListenerRemoveElement(table);
+
+
+
+
         } catch (error) {
             console.error("Error DOMContentLoaded: " + error);
         }
